@@ -6,8 +6,10 @@ import path from "path";
 import { connectDB } from "./config/db.js";
 
 // import authRoutes from "./routes/auth.route.js";
-// import userRoutes from "./routes/user.route.js";
+import eventRoutes from "./routes/event.route.js";
+import reservationRoutes from "./routes/reservation.route.js";
 import ticketRoutes from "./routes/ticket.route.js";
+import userRoutes from "./routes/user.route.js";
 
 // Load environment variables
 dotenv.config();
@@ -26,8 +28,10 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 
 // Routes
 // app.use("/api/auth", authRoutes);
-// app.use("/api/users", userRoutes);
+app.use("/api/events", eventRoutes);
+app.use("/api/reservations", reservationRoutes);
 app.use("/api/tickets", ticketRoutes);
+app.use("/api/user", userRoutes);
 
 // Production settings
 // if (process.env.NODE_ENV === "production") {
