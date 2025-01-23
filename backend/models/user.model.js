@@ -22,6 +22,15 @@ const usersSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    user_password: {
+      type: String,
+      required: true,
+    },
+    na: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   {
     timestamps: true, // Automatically add createdAt and updatedAt fields
