@@ -74,6 +74,7 @@ export const createUsers = async (req, res) => {
 
       // Save new user to database
       const newUser = new User(user);
+
       await newUser.save();
     } catch (error) {
       console.error("Error in Create user:", error, message);
@@ -96,6 +97,7 @@ export const getUsers = async (req, res) => {
   try {
     // Fetch all users and populate department and position details
     const users = await User.find({});
+
     res.status(200).json({ success: true, data: users });
   } catch (error) {
     console.log("Error in Fetching users:", error.message);
