@@ -61,8 +61,10 @@ export const createUsers = async (req, res) => {
       return res.status(400).json({ success: false, message: "Email is already taken" });
     }
 
-    const filePath = path.relative("public/uploads", req.file.path);
-    user.profile_picture_path = filePath;
+    if (req.file) {
+      const filePath = path.relative("public/uploads", req.file.path);
+      user.profile_picture_path = filePath;
+    }
 
     try {
       // Add next user ID
@@ -74,8 +76,9 @@ export const createUsers = async (req, res) => {
 
       // Save new user to database
       const newUser = new User(user);
-
       await newUser.save();
+
+      res.status(201).json({ success: true, data: newUser });
     } catch (error) {
       console.error("Error in Create user:", error, message);
 
@@ -148,6 +151,20 @@ export const updateUsers = async (req, res) => {
       return res.status(404).json({ success: false, message: "Invalid User Id" });
     }
 
+    // Check if email already exists
+    const existingEmail = await User.findOne({ email: user.email });
+
+    if (existingEmail) {
+      if (req.file) {
+        fs.unlink(req.file.path, (unlinkErr) => {
+          if (unlinkErr) {
+            console.error("Failed to delete file:", unlinkErr);
+          }
+        });
+      }
+      return res.status(400).json({ success: false, message: "Email is already taken" });
+    }
+
     // Check if a new file is uploaded
     if (req.file) {
       const filePath = path.relative("public/uploads", req.file.path);
@@ -197,21 +214,21 @@ export const updateUsers = async (req, res) => {
 };
 
 // Controller to delete a user by ID
-// export const deleteUsers = async (req, res) => {
-//   const { id } = req.params;
+export const deleteUsers = async (req, res) => {
+  const { id } = req.params;
 
-//   // Validate the user ID
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res.status(404).json({ success: false, message: "Invalid User Id" });
-//   }
+  // Validate the user ID
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ success: false, message: "Invalid User Id" });
+  }
 
-//   try {
-//     // Delete the user by ID
-//     await User.findByIdAndDelete(id);
+  try {
+    // Delete the user by ID
+    await User.findByIdAndDelete(id);
 
-//     res.status(200).json({ success: true, message: "User deleted" });
-//   } catch (error) {
-//     console.log("Error in Deleting users:", error.message);
-//     res.status(500).json({ success: false, message: "Server Error" });
-//   }
-// };
+    res.status(200).json({ success: true, message: "User deleted" });
+  } catch (error) {
+    console.log("Error in Deleting users:", error.message);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};

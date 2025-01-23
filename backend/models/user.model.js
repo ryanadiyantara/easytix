@@ -21,6 +21,7 @@ const usersSchema = new mongoose.Schema(
     profile_picture_path: {
       type: String,
       required: false,
+      default: "-",
     },
     user_password: {
       type: String,
