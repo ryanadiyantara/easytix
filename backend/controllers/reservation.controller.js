@@ -11,10 +11,9 @@ export const createReservations = async (req, res) => {
     await newReservation.save();
 
     // Populate user and event details
-    const populatedReservation = await Reservation.findById(newReservation._id).populate(
-      "user_id",
-      "event_id"
-    );
+    const populatedReservation = await Reservation.findById(newReservation._id)
+      .populate("user_id") // Populate data user
+      .populate("event_id"); // Populate data event
 
     res.status(201).json({ success: true, data: populatedReservation });
   } catch (error) {
@@ -27,7 +26,9 @@ export const createReservations = async (req, res) => {
 export const getReservations = async (req, res) => {
   try {
     // Fetch all reservations
-    const reservations = await Reservation.find({}).populate("user_id", "event_id");
+    const reservations = await Reservation.find({})
+      .populate("user_id") // Populate data user
+      .populate("event_id"); // Populate data event
 
     res.status(200).json({ success: true, data: reservations });
   } catch (error) {
@@ -50,7 +51,9 @@ export const updateReservations = async (req, res) => {
     // Update the reservation by ID and populate department details
     const updatedReservation = await Reservation.findByIdAndUpdate(id, reservation, {
       new: true,
-    }).populate("department_id", "department_name");
+    })
+      .populate("user_id") // Populate data user
+      .populate("event_id"); // Populate data event
 
     res.status(200).json({ success: true, data: updatedReservation });
   } catch (error) {
@@ -60,21 +63,21 @@ export const updateReservations = async (req, res) => {
 };
 
 // Controller to delete a reservation by ID
-// export const deleteReservations = async (req, res) => {
-//   const { id } = req.params;
+export const deleteReservations = async (req, res) => {
+  const { id } = req.params;
 
-//   // Validate the reservation ID
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res.status(404).json({ success: false, message: "Invalid Reservation Id" });
-//   }
+  // Validate the reservation ID
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ success: false, message: "Invalid Reservation Id" });
+  }
 
-//   try {
-//     // Delete the reservation by ID
-//     await Reservation.findByIdAndDelete(id);
+  try {
+    // Delete the reservation by ID
+    await Reservation.findByIdAndDelete(id);
 
-//     res.status(200).json({ success: true, message: "Reservation deleted" });
-//   } catch (error) {
-//     console.log("Error in Deleting Reservations:", error.message);
-//     res.status(500).json({ success: false, message: "Server Error" });
-//   }
-// };
+    res.status(200).json({ success: true, message: "Reservation deleted" });
+  } catch (error) {
+    console.log("Error in Deleting Reservations:", error.message);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};

@@ -1,7 +1,6 @@
 import express from "express";
 import {
   getReservations,
-  getCurrentReservations,
   createReservations,
   updateReservations,
   deleteReservations,
@@ -15,7 +14,6 @@ const router = express.Router();
 
 // Routes
 router.get("/", getReservations);
-router.get("/:id", getCurrentReservations);
 router.post("/", createReservations);
 router.put("/:id", updateReservations);
 router.delete("/:id", deleteReservations);
