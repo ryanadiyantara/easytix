@@ -32,8 +32,8 @@ export const createEvents = async (req, res) => {
     // Validate required fields
     if (
       !event.name ||
-      !event.event_startDate ||
-      !event.event_endDate ||
+      !event.start_date ||
+      !event.end_date ||
       !event.venue ||
       !event.description ||
       !event.categories ||
@@ -43,12 +43,14 @@ export const createEvents = async (req, res) => {
     }
 
     // Check if file is uploaded
-    if (!req.file) {
-      return res.status(400).json({ success: false, message: "No file uploaded" });
-    }
+    // if (!req.file) {
+    //   return res.status(400).json({ success: false, message: "No file uploaded" });
+    // }
 
-    const filePath = path.relative("public/uploads", req.file.path);
-    event.poster_path = filePath;
+    if (req.file) {
+      const filePath = path.relative("public/uploads", req.file.path);
+      event.poster_path = filePath;
+    }
 
     try {
       // Save new event to database
@@ -124,21 +126,21 @@ export const updateEvents = async (req, res) => {
 };
 
 // Controller to delete a event by ID
-// export const deleteEvents = async (req, res) => {
-//   const { id } = req.params;
+export const deleteEvents = async (req, res) => {
+  const { id } = req.params;
 
-//   // Validate the event ID
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res.status(404).json({ success: false, message: "Invalid Event Id" });
-//   }
+  // Validate the event ID
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ success: false, message: "Invalid Event Id" });
+  }
 
-//   try {
-//     // Delete the event by ID
-//     await Event.findByIdAndDelete(id);
+  try {
+    // Delete the event by ID
+    await Event.findByIdAndDelete(id);
 
-//     res.status(200).json({ success: true, message: "Event deleted" });
-//   } catch (error) {
-//     console.log("Error in Deleting events:", error.message);
-//     res.status(500).json({ success: false, message: "Server Error" });
-//   }
-// };
+    res.status(200).json({ success: true, message: "Event deleted" });
+  } catch (error) {
+    console.log("Error in Deleting events:", error.message);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};

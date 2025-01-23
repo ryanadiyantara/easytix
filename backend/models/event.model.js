@@ -28,7 +28,8 @@ const eventsSchema = new mongoose.Schema(
     },
     poster_path: {
       type: String,
-      required: true,
+      required: false,
+      default: "-",
     },
     quantity: {
       type: Number,

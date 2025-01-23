@@ -1,7 +1,6 @@
 import express from "express";
 import {
   getEvents,
-  getCurrentEvents,
   createEvents,
   updateEvents,
   deleteEvents,
@@ -15,7 +14,6 @@ const router = express.Router();
 
 // Routes
 router.get("/", getEvents);
-router.get("/:id", getCurrentEvents);
 router.post("/", createEvents);
 router.put("/:id", updateEvents);
 router.delete("/:id", deleteEvents);
