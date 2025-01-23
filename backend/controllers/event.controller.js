@@ -36,7 +36,8 @@ export const createEvents = async (req, res) => {
       !event.event_endDate ||
       !event.venue ||
       !event.description ||
-      !event.categories
+      !event.categories ||
+      !event.quantity
     ) {
       return res.status(400).json({ success: false, message: "Please provide all fields" });
     }
@@ -123,21 +124,21 @@ export const updateEvents = async (req, res) => {
 };
 
 // Controller to delete a event by ID
-export const deleteEvents = async (req, res) => {
-  const { id } = req.params;
+// export const deleteEvents = async (req, res) => {
+//   const { id } = req.params;
 
-  // Validate the event ID
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ success: false, message: "Invalid Event Id" });
-  }
+//   // Validate the event ID
+//   if (!mongoose.Types.ObjectId.isValid(id)) {
+//     return res.status(404).json({ success: false, message: "Invalid Event Id" });
+//   }
 
-  try {
-    // Delete the event by ID
-    await Event.findByIdAndDelete(id);
+//   try {
+//     // Delete the event by ID
+//     await Event.findByIdAndDelete(id);
 
-    res.status(200).json({ success: true, message: "Event deleted" });
-  } catch (error) {
-    console.log("Error in Deleting events:", error.message);
-    res.status(500).json({ success: false, message: "Server Error" });
-  }
-};
+//     res.status(200).json({ success: true, message: "Event deleted" });
+//   } catch (error) {
+//     console.log("Error in Deleting events:", error.message);
+//     res.status(500).json({ success: false, message: "Server Error" });
+//   }
+// };

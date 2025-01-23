@@ -30,6 +30,18 @@ const eventsSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+    available_quantity: {
+      type: Number,
+      required: true,
+    },
+    status: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true, // Automatically add createdAt and updatedAt fields
