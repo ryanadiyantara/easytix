@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 
 // Assets
 import BgSignUp from "../assets/img/BgSignUp.png";
-
 import Footer from "../components/Footer";
 
 const Register = () => {
@@ -150,7 +149,7 @@ const Register = () => {
             >
               <Text color={textColor} fontWeight="medium">
                 Already have an account?
-                <Text color={titleColor} as={Link} ms="5px" to="/login" fontWeight="bold">
+                <Text color={titleColor} as={Link} ms="5px" to="/signin" fontWeight="bold">
                   Sign In
                 </Text>
               </Text>

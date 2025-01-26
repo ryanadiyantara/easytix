@@ -15,10 +15,9 @@ import { Link } from "react-router-dom";
 
 // Assets
 import BgSignUp from "../assets/img/BgSignUp.png";
-
 import Footer from "../components/Footer";
 
-const Login = () => {
+const Signin = () => {
   // Chakra color mode
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.700", "white");
@@ -142,7 +141,7 @@ const Login = () => {
                   color={titleColor}
                   as={Link}
                   ms="5px"
-                  to="/login/forgotpassword"
+                  to="/signin/forgotpassword"
                   fontWeight="bold"
                 >
                   Reset it
@@ -163,4 +162,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signin;
