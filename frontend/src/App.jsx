@@ -3,6 +3,7 @@ import { Box, useColorModeValue } from "@chakra-ui/react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import Login from "./pages/login";
+import Register from "./pages/register";
 import ForgotPassword from "./pages/forgotpassword";
 import AdminDashboard from "./pages/admin.dashboard";
 import AdminChangePassword from "./pages/admin.changepassword";
@@ -14,11 +15,13 @@ import EventDetail from "./pages/user.eventdetail";
 function App() {
   return (
     <>
-      <Box minH={"100vh"} bg={useColorModeValue("gray.100", "gray.900")}>
+      {/* <Box minH={"100vh"} bg={useColorModeValue("gray.100", "gray.900")}> */}
+      <Box minH={"100vh"}>
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/login/forgotpassword" element={<ForgotPassword />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/changepassword" element={<AdminChangePassword />} />

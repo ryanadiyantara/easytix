@@ -18,7 +18,7 @@ import BgSignUp from "../assets/img/BgSignUp.png";
 
 import Footer from "../components/Footer";
 
-const Login = () => {
+const Register = () => {
   // Chakra color mode
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.700", "white");
@@ -57,7 +57,7 @@ const Login = () => {
           mb="30px"
         >
           <Text fontSize="4xl" color="white" fontWeight="bold">
-            Welcome to Easy Tix!
+            Create a New Account
           </Text>
           <Text
             fontSize="md"
@@ -67,8 +67,8 @@ const Login = () => {
             mb="26px"
             w={{ base: "75%", sm: "60%" }}
           >
-            Please log in first to access our features. Your amazing ticket booking experience
-            starts here!
+            Join us to access exclusive features and services. Fill out the form below to create a
+            new account and start your journey!
           </Text>
         </Flex>
         <Flex alignItems="center" justifyContent="center" mb="60px" mt="20px">
@@ -83,9 +83,21 @@ const Login = () => {
             boxShadow="0 20px 27px 0 rgb(0 0 0 / 5%)"
           >
             <Text fontSize="xl" color={textColor} fontWeight="bold" textAlign="center" mb="22px">
-              Sign In
+              Register With
             </Text>
             <FormControl>
+              <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                Name
+              </FormLabel>
+              <Input
+                fontSize="sm"
+                ms="4px"
+                borderRadius="15px"
+                type="text"
+                placeholder="Your full name"
+                mb="24px"
+                size="lg"
+              />
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                 Email
               </FormLabel>
@@ -126,7 +138,7 @@ const Login = () => {
                   bg: "teal.400",
                 }}
               >
-                SIGN IN
+                SIGN UP
               </Button>
             </FormControl>
             <Flex
@@ -136,22 +148,10 @@ const Login = () => {
               maxW="100%"
               mt="0px"
             >
-              <Text color={textColor} fontWeight="medium" mb="10px">
-                Forgot Password?
-                <Text
-                  color={titleColor}
-                  as={Link}
-                  ms="5px"
-                  to="/login/forgotpassword"
-                  fontWeight="bold"
-                >
-                  Reset it
-                </Text>
-              </Text>
               <Text color={textColor} fontWeight="medium">
-                Don't have an account?
-                <Text color={titleColor} as={Link} ms="5px" to="/register" fontWeight="bold">
-                  Sign up
+                Already have an account?
+                <Text color={titleColor} as={Link} ms="5px" to="/login" fontWeight="bold">
+                  Sign In
                 </Text>
               </Text>
             </Flex>
@@ -163,4 +163,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
