@@ -15,7 +15,6 @@ import EventDetail from "./pages/user.eventdetail";
 function App() {
   return (
     <>
-      {/* <Box minH={"100vh"} bg={useColorModeValue("gray.100", "gray.900")}> */}
       <Box minH={"100vh"}>
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // Chakra imports
 import {
   Box,
@@ -6,22 +6,104 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  IconButton,
   Input,
+  InputGroup,
+  InputRightElement,
   Text,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
-import { Link } from "react-router-dom";
-
-// Assets
 import BgSignUp from "../assets/img/BgSignUp.png";
 import Footer from "../components/Footer";
 
+import { useUserStore } from "../store/user";
+
 const Signin = () => {
-  // Chakra color mode
+  // Utils
+  const { signin } = useUserStore();
+
+  const toast = useToast();
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.700", "white");
   const bgColor = useColorModeValue("white", "gray.700");
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [newUser, setNewUser] = useState({
+    email: "",
+    user_password: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
+  // Services
+  useEffect(() => {
+    const signinMessage = searchParams.get("message");
+    if (signinMessage === "Session Expired") {
+      toast({
+        title: "Error",
+        description: "Session expired, please log in again",
+        status: "error",
+        isClosable: true,
+      });
+    } else if (signinMessage === "Password reset successfully") {
+      toast({
+        title: "Success",
+        description: "Password reset successfully, please log in again",
+        status: "success",
+        isClosable: true,
+      });
+    } else if (signinMessage === "Token is invalid") {
+      toast({
+        title: "Error",
+        description: "Token is invalid or expired",
+        status: "error",
+        isClosable: true,
+      });
+    }
+  }, [searchParams]);
+
+  const handleSubmit = async () => {
+    const currentErrors = {
+      email: !newUser.email,
+      user_password: !newUser.user_password,
+    };
+
+    setErrors(currentErrors);
+
+    const { success, message } = await signin(newUser);
+
+    if (success) {
+      toast({
+        title: "Success",
+        description: message,
+        status: "success",
+        isClosable: true,
+      });
+      setNewUser({
+        email: "",
+        user_password: "",
+      });
+      setTimeout(() => {
+        // navigate("/dashboard");
+        navigate("/admin/dashboard");
+        window.location.reload();
+      }, 1500);
+    } else {
+      toast({
+        title: "Error",
+        description: message,
+        status: "error",
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <>
       <Flex
@@ -94,21 +176,39 @@ const Signin = () => {
                 borderRadius="15px"
                 type="email"
                 placeholder="Your email address"
+                name="email"
                 mb="24px"
                 size="lg"
+                value={newUser.email}
+                onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                borderColor={errors.email ? "red.500" : "gray.200"}
               />
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                 Password
               </FormLabel>
-              <Input
-                fontSize="sm"
-                ms="4px"
-                borderRadius="15px"
-                type="password"
-                placeholder="Your password"
-                mb="24px"
-                size="lg"
-              />
+              <InputGroup size="lg" mb="24px">
+                <Input
+                  fontSize="sm"
+                  ms="4px"
+                  borderRadius="15px"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Your password"
+                  name="user_password"
+                  mb="24px"
+                  size="lg"
+                  value={newUser.user_password}
+                  onChange={(e) => setNewUser({ ...newUser, user_password: e.target.value })}
+                  borderColor={errors.user_password ? "red.500" : "gray.200"}
+                />
+                <InputRightElement>
+                  <IconButton
+                    aria-label={showPassword ? "Hide old password" : "Show old password"}
+                    icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                    onClick={togglePasswordVisibility}
+                    variant="ghost"
+                  />
+                </InputRightElement>
+              </InputGroup>
               <Button
                 type="submit"
                 bg="teal.300"
@@ -124,6 +224,7 @@ const Signin = () => {
                 _active={{
                   bg: "teal.400",
                 }}
+                onClick={handleSubmit}
               >
                 SIGN IN
               </Button>

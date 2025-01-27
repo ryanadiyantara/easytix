@@ -71,7 +71,7 @@ export const createUsers = async (req, res) => {
       user.user_id = await getNextUserId();
 
       // Add hashed password
-      const hashedPwd = await bcrypt.hash("chakra1234", 10); // salt rounds
+      const hashedPwd = await bcrypt.hash("easytix123", 10); // salt rounds
       user.user_password = hashedPwd;
 
       // Save new user to database

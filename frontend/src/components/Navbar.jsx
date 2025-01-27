@@ -23,11 +23,11 @@ import { SettingsIcon } from "./Icons/Icons";
 import { HSeparator } from "./Separator";
 import { SidebarResponsive } from "./Sidebar";
 
-// import { useUserStore } from "../store/user";
+import { useUserStore } from "../store/user";
 
 function Navbar() {
   // Utils
-  //   const { logoutUser } = useUserStore();
+  const { logout } = useUserStore();
   const [isOpen, setIsOpen] = useState(false);
 
   const routes = [
@@ -44,26 +44,26 @@ function Navbar() {
   const handleCloseDrawer = () => setIsOpen(false);
 
   // Services
-  //   const handleLogout = async () => {
-  //     const { success, message } = await logoutUser();
+  const handleLogout = async () => {
+    const { success, message } = await logout();
 
-  //     if (success) {
-  //       toast({
-  //         title: "Success",
-  //         description: message,
-  //         status: "success",
-  //         isClosable: true,
-  //       });
-  //       navigate("/login");
-  //     } else {
-  //       toast({
-  //         title: "Error",
-  //         description: message,
-  //         status: "error",
-  //         isClosable: true,
-  //       });
-  //     }
-  //   };
+    if (success) {
+      toast({
+        title: "Success",
+        description: message,
+        status: "success",
+        isClosable: true,
+      });
+      navigate("/signin");
+    } else {
+      toast({
+        title: "Error",
+        description: message,
+        status: "error",
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <Flex
@@ -207,7 +207,7 @@ function Navbar() {
                     variant="no-effects"
                     px="20px"
                     mb="16px"
-                    // onClick={handleLogout}
+                    onClick={handleLogout}
                   >
                     <Text textDecoration="none">Log Out</Text>
                   </Button>

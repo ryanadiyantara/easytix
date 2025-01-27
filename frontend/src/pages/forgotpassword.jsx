@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // Chakra imports
 import {
   Box,
@@ -9,19 +9,64 @@ import {
   Input,
   Text,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-// Assets
 import BgSignUp from "../assets/img/BgSignUp.png";
 import Footer from "../components/Footer";
 
+import { useUserStore } from "../store/user";
+
 const ForgotPassword = () => {
-  // Chakra color mode
+  // Utils
+  const { forgotPassword } = useUserStore();
+
+  const toast = useToast();
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.700", "white");
   const bgColor = useColorModeValue("white", "gray.700");
+  const navigate = useNavigate();
+  const [newUser, setNewUser] = useState({
+    email: "",
+  });
+  const [errors, setErrors] = useState({});
+
+  // Services
+  const handleResetLink = async () => {
+    const currentErrors = {
+      email: !newUser.email,
+    };
+
+    setErrors(currentErrors);
+
+    const { success, message } = await forgotPassword(newUser);
+
+    if (success) {
+      toast({
+        title: "Success",
+        description: message,
+        status: "success",
+        isClosable: true,
+      });
+      setNewUser({
+        email: "",
+      });
+      setTimeout(() => {
+        navigate("/signin");
+        window.location.reload();
+      }, 1500);
+    } else {
+      toast({
+        title: "Error",
+        description: message,
+        status: "error",
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <>
       <Flex
@@ -94,8 +139,12 @@ const ForgotPassword = () => {
                 borderRadius="15px"
                 type="email"
                 placeholder="Your email address"
+                name="email"
                 mb="24px"
                 size="lg"
+                value={newUser.email}
+                onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                borderColor={errors.email ? "red.500" : "gray.200"}
               />
               <Button
                 type="submit"
@@ -112,6 +161,7 @@ const ForgotPassword = () => {
                 _active={{
                   bg: "teal.400",
                 }}
+                onClick={handleResetLink}
               >
                 SEND RESET LINK
               </Button>
