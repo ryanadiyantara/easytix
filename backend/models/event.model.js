@@ -43,6 +43,11 @@ const eventsSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    na: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   {
     timestamps: true, // Automatically add createdAt and updatedAt fields

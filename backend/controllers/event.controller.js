@@ -42,15 +42,13 @@ export const createEvents = async (req, res) => {
       return res.status(400).json({ success: false, message: "Please provide all fields" });
     }
 
-    // Check if file is uploaded
-    // if (!req.file) {
-    //   return res.status(400).json({ success: false, message: "No file uploaded" });
-    // }
-
     if (req.file) {
       const filePath = path.relative("public/uploads", req.file.path);
       event.poster_path = filePath;
     }
+
+    event.available_quantity = event.quantity;
+    event.status = "Ready";
 
     try {
       // Save new event to database
@@ -59,7 +57,7 @@ export const createEvents = async (req, res) => {
 
       res.status(201).json({ success: true, data: newEvent });
     } catch (error) {
-      console.error("Error in Create event:", error, message);
+      console.error("Error in Create event:", error);
 
       // Delete file if event creation fails
       if (req.file) {
