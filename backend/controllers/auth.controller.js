@@ -54,6 +54,7 @@ export const signin = asyncHandler(async (req, res) => {
   res.json({
     success: true,
     accessToken: accessToken,
+    role: foundUser.role,
   });
 });
 

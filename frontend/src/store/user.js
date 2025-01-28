@@ -76,7 +76,7 @@ export const useUserStore = create((set) => ({
     }
 
     set((state) => ({ users: [...state.users, data.data] }));
-    return { success: true, message: "Sign In successfully" };
+    return { success: true, message: "Sign In successfully", role: data.role };
   },
 
   // Function to logout a user

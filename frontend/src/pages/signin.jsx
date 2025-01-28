@@ -76,7 +76,7 @@ const Signin = () => {
 
     setErrors(currentErrors);
 
-    const { success, message } = await signin(newUser);
+    const { success, message, role } = await signin(newUser);
 
     if (success) {
       toast({
@@ -90,8 +90,11 @@ const Signin = () => {
         user_password: "",
       });
       setTimeout(() => {
-        // navigate("/dashboard");
-        navigate("/admin/dashboard");
+        if (role === "Admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/dashboard");
+        }
         window.location.reload();
       }, 1500);
     } else {
