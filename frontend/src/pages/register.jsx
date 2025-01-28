@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // Chakra imports
 import {
   Box,
@@ -6,22 +6,82 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  IconButton,
   Input,
+  InputGroup,
+  InputRightElement,
   Text,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
-import { Link } from "react-router-dom";
-
-// Assets
 import BgSignUp from "../assets/img/BgSignUp.png";
 import Footer from "../components/Footer";
 
+import { useUserStore } from "../store/user";
+
 const Register = () => {
-  // Chakra color mode
+  // Utils
+  const { createUser } = useUserStore();
+
+  const toast = useToast();
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.700", "white");
   const bgColor = useColorModeValue("white", "gray.700");
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [newUser, setNewUser] = useState({
+    name: "",
+    email: "",
+    user_password: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
+  // Services
+  const handleSubmit = async () => {
+    const currentErrors = {
+      name: !newUser.name,
+      email: !newUser.email,
+      user_password: !newUser.user_password,
+    };
+
+    setErrors(currentErrors);
+
+    newUser.role = "User";
+
+    const { success, message } = await createUser(newUser);
+
+    if (success) {
+      toast({
+        title: "Success",
+        description: message,
+        status: "success",
+        isClosable: true,
+      });
+      setNewUser({
+        name: "",
+        email: "",
+        user_password: "",
+      });
+      setTimeout(() => {
+        navigate("/signin");
+        window.location.reload();
+      }, 1500);
+    } else {
+      toast({
+        title: "Error",
+        description: message,
+        status: "error",
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <>
       <Flex
@@ -94,8 +154,12 @@ const Register = () => {
                 borderRadius="15px"
                 type="text"
                 placeholder="Your full name"
+                name="name"
                 mb="24px"
                 size="lg"
+                value={newUser.name}
+                onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                borderColor={errors.name ? "red.500" : "gray.200"}
               />
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                 Email
@@ -106,21 +170,39 @@ const Register = () => {
                 borderRadius="15px"
                 type="email"
                 placeholder="Your email address"
+                name="email"
                 mb="24px"
                 size="lg"
+                value={newUser.email}
+                onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                borderColor={errors.email ? "red.500" : "gray.200"}
               />
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                 Password
               </FormLabel>
-              <Input
-                fontSize="sm"
-                ms="4px"
-                borderRadius="15px"
-                type="password"
-                placeholder="Your password"
-                mb="24px"
-                size="lg"
-              />
+              <InputGroup size="lg" mb="24px">
+                <Input
+                  fontSize="sm"
+                  ms="4px"
+                  borderRadius="15px"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Your password"
+                  name="user_password"
+                  mb="24px"
+                  size="lg"
+                  value={newUser.user_password}
+                  onChange={(e) => setNewUser({ ...newUser, user_password: e.target.value })}
+                  borderColor={errors.user_password ? "red.500" : "gray.200"}
+                />
+                <InputRightElement>
+                  <IconButton
+                    aria-label={showPassword ? "Hide old password" : "Show old password"}
+                    icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                    onClick={togglePasswordVisibility}
+                    variant="ghost"
+                  />
+                </InputRightElement>
+              </InputGroup>
               <Button
                 type="submit"
                 bg="teal.300"
@@ -136,6 +218,7 @@ const Register = () => {
                 _active={{
                   bg: "teal.400",
                 }}
+                onClick={handleSubmit}
               >
                 SIGN UP
               </Button>

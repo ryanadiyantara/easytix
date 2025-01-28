@@ -32,67 +32,37 @@ const getNextUserId = async () => {
 
 // Controller to create a new user
 export const createUsers = async (req, res) => {
-  upload(req, res, async (err) => {
-    // Check for file upload error
-    if (err) {
-      return res
-        .status(500)
-        .json({ success: false, message: "File upload failed", error: err.message });
-    }
+  const user = req.body; // user will send this data
 
-    const user = req.body; // user will send this data
+  // Validate required fields
+  if (!user.name || !user.email || !user.user_password) {
+    return res.status(400).json({ success: false, message: "Please provide all fields" });
+  }
 
-    // Validate required fields
-    if (!user.name || !user.email) {
-      return res.status(400).json({ success: false, message: "Please provide all fields" });
-    }
+  // Check if email already exists
+  const existingEmail = await User.findOne({ email: user.email });
 
-    // Check if email already exists
-    const existingEmail = await User.findOne({ email: user.email });
+  if (existingEmail) {
+    return res.status(400).json({ success: false, message: "Email is already taken" });
+  }
 
-    if (existingEmail) {
-      if (req.file) {
-        fs.unlink(req.file.path, (unlinkErr) => {
-          if (unlinkErr) {
-            console.error("Failed to delete file:", unlinkErr);
-          }
-        });
-      }
-      return res.status(400).json({ success: false, message: "Email is already taken" });
-    }
+  try {
+    // Add next user ID
+    user.user_id = await getNextUserId();
 
-    if (req.file) {
-      const filePath = path.relative("public/uploads", req.file.path);
-      user.profile_picture_path = filePath;
-    }
+    // Add hashed password
+    const hashedPwd = await bcrypt.hash(user.user_password, 10); // salt rounds
+    user.user_password = hashedPwd;
 
-    try {
-      // Add next user ID
-      user.user_id = await getNextUserId();
+    // Save new user to database
+    const newUser = new User(user);
+    await newUser.save();
 
-      // Add hashed password
-      const hashedPwd = await bcrypt.hash("easytix123", 10); // salt rounds
-      user.user_password = hashedPwd;
-
-      // Save new user to database
-      const newUser = new User(user);
-      await newUser.save();
-
-      res.status(201).json({ success: true, data: newUser });
-    } catch (error) {
-      console.error("Error in Create user:", error, message);
-
-      // Delete file if user creation fails
-      if (req.file) {
-        fs.unlink(req.file.path, (unlinkErr) => {
-          if (unlinkErr) {
-            console.error("Failed to delete file during error handling:", unlinkErr);
-          }
-        });
-      }
-      res.status(500).json({ success: false, message: "Server Error" });
-    }
-  });
+    res.status(201).json({ success: true, data: newUser });
+  } catch (error) {
+    console.error("Error in Create user:", error, message);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
 };
 
 // Controller to get all users

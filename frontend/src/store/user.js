@@ -27,8 +27,29 @@ export const useUserStore = create((set) => ({
   currentUsers: [],
   setUser: (users) => set({ users }),
 
-  // CRUD User Functions
-  // -------------------
+  // Function to create a new user
+  createUser: async (newUser) => {
+    if (!newUser.name || !newUser.email || !newUser.user_password) {
+      return { success: false, message: "Please fill in all fields." };
+    }
+
+    const res = await fetch("/api/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newUser),
+    });
+
+    const data = await res.json();
+    if (!data.success) return { success: false, message: data.message };
+
+    return { success: true, message: "User created successfully" };
+  },
+
+  // Create a new admin
+  // Update User / Admin
+  // Read User
 
   // Auth functions
   // Function to signin a user
