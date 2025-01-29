@@ -5,12 +5,12 @@ import {
   updateReservations,
   deleteReservations,
 } from "../controllers/reservation.controller.js";
-// import verifyJWT from "../middleware/verifyJWT.js";
+import verifyJWT from "../middleware/verifyJWT.js";
 
 const router = express.Router();
 
 // Verify JWT
-// router.use(verifyJWT);
+router.use(verifyJWT);
 
 // Routes
 router.get("/", getReservations);

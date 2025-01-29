@@ -6,18 +6,15 @@ import {
   updateUsers,
   deleteUsers,
 } from "../controllers/user.controller.js";
-// import verifyJWT from "../middleware/verifyJWT.js";
+import verifyJWT from "../middleware/verifyJWT.js";
 
 const router = express.Router();
 
-// Verify JWT
-// router.use(verifyJWT);
-
 // Routes
-router.get("/", getUsers);
-router.get("/:id", getCurrentUsers);
+router.get("/", verifyJWT, getUsers);
+router.get("/:id", verifyJWT, getCurrentUsers);
 router.post("/", createUsers);
-router.put("/:id", updateUsers);
-router.delete("/:id", deleteUsers);
+router.put("/:id", verifyJWT, updateUsers);
+router.delete("/:id", verifyJWT, deleteUsers);
 
 export default router;

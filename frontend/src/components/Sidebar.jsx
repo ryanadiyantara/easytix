@@ -26,15 +26,15 @@ import { HSeparator } from "./Separator";
 import Logo1 from "../assets/img/avatars/avatar1.png";
 import Logo2 from "../assets/img/avatars/avatar2.png";
 
-// import { useUserStore } from "../store/user";
+import { useUserStore } from "../store/user";
 
 function Sidebar() {
   // Utils
-  // const { currentUsers, fetchCurrentUser } = useUserStore();
+  const { currentUsers, fetchCurrentUser } = useUserStore();
 
   const routes = [
     {
-      name: "",
+      name: "Admin",
       views: [
         { path: "/admin/dashboard", name: "Dashboard", icon: <HomeIcon /> },
         { path: "/admin/listuser", name: "List of Users", icon: <PersonIcon /> },
@@ -58,36 +58,32 @@ function Sidebar() {
   const activeBoxShadow = useColorModeValue("0px 7px 11px rgba(0, 0, 0, 0.04)", "none");
 
   // Services
-  // useEffect(() => {
-  //   const checkAccess = async () => {
-  //     await fetchCurrentUser();
-  //     setIsUserLoaded(true);
-  //   };
+  useEffect(() => {
+    const checkAccess = async () => {
+      await fetchCurrentUser();
+      setIsUserLoaded(true);
+    };
 
-  //   checkAccess();
-  // }, [fetchCurrentUser]);
+    checkAccess();
+  }, [fetchCurrentUser]);
 
-  // useEffect(() => {
-  //   if (isUserLoaded && currentUsers) {
-  //     const activeRoute = routes.find((route) =>
-  //       route.views.some((view) => view.path === location.pathname)
-  //     );
-  //     if (
-  //       activeRoute &&
-  //       activeRoute.name !== "" &&
-  //       activeRoute.name !== "ESS" &&
-  //       currentUsers?.department_id?.department_name !== activeRoute.name
-  //     ) {
-  //       navigate("/dashboard");
-  //       toast({
-  //         title: "Error",
-  //         description: "You are not allowed to access this page",
-  //         status: "error",
-  //         isClosable: true,
-  //       });
-  //     }
-  //   }
-  // }, [isUserLoaded, currentUsers, location, navigate]);
+  useEffect(() => {
+    if (isUserLoaded && currentUsers) {
+      const activeRoute = routes.find((route) =>
+        route.views.some((view) => view.path === location.pathname)
+      );
+
+      if (activeRoute && activeRoute.name == "Admin" && currentUsers?.role !== activeRoute.name) {
+        navigate("/dashboard");
+        toast({
+          title: "Error",
+          description: "You are not allowed to access admin page",
+          status: "error",
+          isClosable: true,
+        });
+      }
+    }
+  }, [isUserLoaded, currentUsers, location, navigate]);
 
   return (
     <Box display={{ sm: "none", xl: "block" }} position="fixed">
