@@ -48,6 +48,23 @@ export const useUserStore = create((set) => ({
   },
 
   // Function to fetch all users
+  fetchUser: async () => {
+    const res = await fetch("/api/users", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 401 || res.status === 403) {
+      window.location.href = `/login?message=Session Expired`;
+      return;
+    }
+
+    const data = await res.json();
+
+    set({ users: data.data });
+  },
 
   // Function to fetch current user
   fetchCurrentUser: async () => {
@@ -67,6 +84,8 @@ export const useUserStore = create((set) => ({
 
     set({ currentUsers: data.data });
   },
+
+  // Function to update a user by ID
 
   // Function to update a user's password by ID
   changePassword: async (pid, currentEmail, changedPassword) => {

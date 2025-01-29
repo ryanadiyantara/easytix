@@ -37,8 +37,8 @@ function Sidebar() {
       name: "",
       views: [
         { path: "/admin/dashboard", name: "Dashboard", icon: <HomeIcon /> },
-        { path: "/admin/listuser", name: "List User", icon: <PersonIcon /> },
-        { path: "/admin/listreservation", name: "List Reservation", icon: <DocumentIcon /> },
+        { path: "/admin/listuser", name: "List of Users", icon: <PersonIcon /> },
+        { path: "/admin/listreservation", name: "List of Reservations", icon: <DocumentIcon /> },
         { path: "/admin/changepassword", name: "Change Password", icon: <SupportIcon /> },
       ],
     },

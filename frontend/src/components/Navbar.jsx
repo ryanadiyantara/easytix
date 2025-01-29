@@ -32,8 +32,8 @@ function Navbar() {
 
   const routes = [
     { path: "/admin/dashboard", name: "Dashboard", category: "" },
-    { path: "/admin/listuser", name: "List User", category: "" },
-    { path: "/admin/listreservation", name: "List Reservation", category: "" },
+    { path: "/admin/listuser", name: "List of Users", category: "" },
+    { path: "/admin/listreservation", name: "List of Reservations", category: "" },
     { path: "/admin/changepassword", name: "Change Password", category: "" },
   ];
 

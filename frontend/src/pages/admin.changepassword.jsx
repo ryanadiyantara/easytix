@@ -25,7 +25,6 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-// import CustomModal from "../components/Modal";
 import Footer from "../components/Footer";
 
 import { useUserStore } from "../store/user";
