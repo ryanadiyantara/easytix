@@ -19,7 +19,7 @@ import {
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
-import { HomeIcon, PersonIcon } from "./Icons/Icons";
+import { DocumentIcon, HomeIcon, PersonIcon, SupportIcon } from "./Icons/Icons";
 import IconBox from "./Icons/IconBox";
 import { HSeparator } from "./Separator";
 
@@ -37,7 +37,9 @@ function Sidebar() {
       name: "",
       views: [
         { path: "/admin/dashboard", name: "Dashboard", icon: <HomeIcon /> },
-        { path: "/admin/changepassword", name: "Change Password", icon: <PersonIcon /> },
+        { path: "/admin/listuser", name: "List User", icon: <PersonIcon /> },
+        { path: "/admin/listreservation", name: "List Reservation", icon: <DocumentIcon /> },
+        { path: "/admin/changepassword", name: "Change Password", icon: <SupportIcon /> },
       ],
     },
   ];

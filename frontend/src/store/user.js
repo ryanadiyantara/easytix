@@ -47,9 +47,62 @@ export const useUserStore = create((set) => ({
     return { success: true, message: "User created successfully" };
   },
 
-  // Create a new admin
+  // Function to fetch all users
+
+  // Function to fetch current user
+  fetchCurrentUser: async () => {
+    const res = await fetch(`/api/users/${userInfo.pid}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 401 || res.status === 403) {
+      window.location.href = `/login?message=Session Expired`;
+      return;
+    }
+
+    const data = await res.json();
+
+    set({ currentUsers: data.data });
+  },
+
+  // Function to update a user's password by ID
+  changePassword: async (pid, currentEmail, changedPassword) => {
+    if (!changedPassword.old_password || !changedPassword.new_password) {
+      return { success: false, message: "Please fill in all fields." };
+    }
+
+    const formData = new FormData();
+    formData.append("old_password", changedPassword.old_password);
+    formData.append("new_password", changedPassword.new_password);
+    formData.append("currentEmail", currentEmail);
+
+    const res = await fetch(`/api/users/${pid}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (res.status === 401 || res.status === 403) {
+      window.location.href = `/login?message=Session Expired`;
+      return;
+    }
+
+    const data = await res.json();
+    if (!data.success) return { success: false, message: data.message };
+
+    // update the ui immediately, without needing a refresh
+    set((state) => ({
+      users: state.users.filter((user) => user._id !== pid),
+    }));
+    return { success: true, message: data.message };
+  },
+
   // Update User / Admin
-  // Read User
 
   // Auth functions
   // Function to signin a user

@@ -6,6 +6,8 @@ import Signin from "./pages/signin";
 import Register from "./pages/register";
 import ForgotPassword from "./pages/forgotpassword";
 import AdminDashboard from "./pages/admin.dashboard";
+import AdminListUser from "./pages/admin.listuser";
+import AdminListReservation from "./pages/admin.listreservation";
 import AdminChangePassword from "./pages/admin.changepassword";
 import UserDashboard from "./pages/user.dashboard";
 import UserChangePassword from "./pages/user.changepassword";
@@ -23,6 +25,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/signin/forgotpassword" element={<ForgotPassword />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/listuser" element={<AdminListUser />} />
+          <Route path="/admin/listreservation" element={<AdminListReservation />} />
           <Route path="/admin/changepassword" element={<AdminChangePassword />} />
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/changepassword" element={<UserChangePassword />} />
