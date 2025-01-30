@@ -23,8 +23,8 @@ import { DocumentIcon, HomeIcon, PersonIcon, SupportIcon } from "./Icons/Icons";
 import IconBox from "./Icons/IconBox";
 import { HSeparator } from "./Separator";
 
-import Logo1 from "../assets/img/avatars/avatar1.png";
-import Logo2 from "../assets/img/avatars/avatar2.png";
+import Logo1 from "../assets/img/logo1.png";
+import Logo2 from "../assets/img/logo2.png";
 
 import { useUserStore } from "../store/user";
 
