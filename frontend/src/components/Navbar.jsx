@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   useColorModeValue,
@@ -27,7 +27,7 @@ import { useUserStore } from "../store/user";
 
 function Navbar() {
   // Utils
-  const { logout } = useUserStore();
+  const { currentUsers, fetchCurrentUser, logout } = useUserStore();
   const [isOpen, setIsOpen] = useState(false);
 
   const routes = [
@@ -35,17 +35,43 @@ function Navbar() {
     { path: "/admin/listuser", name: "List of Users", category: "" },
     { path: "/admin/listreservation", name: "List of Reservations", category: "" },
     { path: "/admin/changepassword", name: "Change Password", category: "" },
+    { path: "/dashboard", name: "Dashboard", category: "" },
+    { path: "/profile", name: "Profile", category: "" },
+    { path: "/events", name: "Event List", category: "" },
+    { path: "/events/detail", name: "Event Detail", category: "" },
+    { path: "/reservation", name: "Reservation", category: "" },
   ];
 
   const toast = useToast();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isUserLoaded, setIsUserLoaded] = useState(false);
+  const [isUserSession, setIsUserSession] = useState(false);
   const activeRoute = routes.find((route) => route.path === location.pathname);
   const { colorMode, toggleColorMode } = useColorMode();
   const handleOpenDrawer = () => setIsOpen(true);
   const handleCloseDrawer = () => setIsOpen(false);
 
   // Services
+  useEffect(() => {
+    const checkAccess = async () => {
+      await fetchCurrentUser();
+      setIsUserLoaded(true);
+    };
+
+    checkAccess();
+  }, [fetchCurrentUser]);
+
+  useEffect(() => {
+    if (isUserLoaded && currentUsers) {
+      if (currentUsers?.role === "Admin") {
+        setIsUserSession(true);
+      } else {
+        setIsUserSession(false);
+      }
+    }
+  }, [isUserLoaded, currentUsers]);
+
   const handleLogout = async () => {
     const { success, message } = await logout();
 
@@ -111,22 +137,19 @@ function Navbar() {
         justifyContent={{ md: "space-between" }}
       >
         <Box mb={{ sm: "8px", md: "0px" }}>
-          <Breadcrumb
-            display={{
-              base: "none",
-              md: "block",
-            }}
-          >
+          <Breadcrumb>
             <BreadcrumbItem color={"gray.500"}>
-              <BreadcrumbLink href="/admin/dashboard" color={"gray.500"}>
+              <BreadcrumbLink href={isUserSession ? "/admin/dashboard" : "/dashboard"} color={"gray.500"}>
                 Pages
               </BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbItem color={useColorModeValue("black", "white")}>
-              <BreadcrumbLink href="/admin/dashboard" color={useColorModeValue("black", "white")}>
-                Admin
-              </BreadcrumbLink>
-            </BreadcrumbItem>
+            {isUserSession && (
+              <BreadcrumbItem color={useColorModeValue("black", "white")}>
+                <BreadcrumbLink href="/admin/dashboard" color={useColorModeValue("black", "white")}>
+                  Admin
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            )}
             {activeRoute.category && (
               <BreadcrumbItem color={useColorModeValue("black", "white")}>
                 <BreadcrumbLink href="#" color={useColorModeValue("black", "white")}>
@@ -165,8 +188,10 @@ function Navbar() {
           flexDirection="row"
           justifyContent="flex-end"
         >
-          {/* Hamburger Icon */}
-          <SidebarResponsive />
+          
+          {isUserSession && (
+            <SidebarResponsive />
+          )}
           <SettingsIcon
             cursor="pointer"
             color={useColorModeValue("black", "white")}
@@ -180,7 +205,7 @@ function Navbar() {
             <DrawerHeader>
               <DrawerCloseButton />
               <Text fontSize="xl" fontWeight="bold" mt="16px">
-                Easy Tix Admin Options
+                Easy Tix Options
               </Text>
               <HSeparator />
             </DrawerHeader>

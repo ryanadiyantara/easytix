@@ -192,14 +192,14 @@ export default Sidebar;
 
 export function SidebarResponsive({}) {
   // Utils
-  // const { currentUsers, fetchCurrentUser } = useUserStore();
-
   const routes = [
     {
-      name: "",
+      name: "Admin",
       views: [
         { path: "/admin/dashboard", name: "Dashboard", icon: <HomeIcon /> },
-        { path: "/admin/changepassword", name: "Change Password", icon: <PersonIcon /> },
+        { path: "/admin/listuser", name: "List of Users", icon: <PersonIcon /> },
+        { path: "/admin/listreservation", name: "List of Reservations", icon: <DocumentIcon /> },
+        { path: "/admin/changepassword", name: "Change Password", icon: <SupportIcon /> },
       ],
     },
   ];
@@ -214,11 +214,6 @@ export function SidebarResponsive({}) {
   const hoverBg = useColorModeValue("gray.200", "gray.700");
   const sidebarBg = useColorModeValue("white", "navy.800");
   const activeBoxShadow = useColorModeValue("0px 7px 11px rgba(0, 0, 0, 0.04)", "none");
-
-  // Services
-  // useEffect(() => {
-  //   fetchCurrentUser();
-  // }, [fetchCurrentUser]);
 
   return (
     <>
