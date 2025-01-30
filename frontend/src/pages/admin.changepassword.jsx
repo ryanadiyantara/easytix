@@ -23,6 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
+import Background from "../components/Background";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -101,6 +102,7 @@ const AdminChangePassword = () => {
 
   return (
     <>
+      <Background />
       <Sidebar />
       <Box
         w={{

@@ -21,6 +21,7 @@ import {
 } from "@chakra-ui/react";
 import { FaPen, FaTrash } from "react-icons/fa";
 
+import Background from "../components/Background";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import CustomModal from "../components/Modal";
@@ -290,7 +291,8 @@ const AdminDashboard = () => {
   };
 
   return (
-    <>
+    <>    
+      <Background />
       <Sidebar />
       <Box
         w={{

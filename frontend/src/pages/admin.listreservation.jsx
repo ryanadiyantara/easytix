@@ -16,6 +16,7 @@ import {
   Badge,
 } from "@chakra-ui/react";
 
+import Background from "../components/Background";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -48,6 +49,7 @@ const AdminListReservation = () => {
 
   return (
     <>
+      <Background />
       <Sidebar />
       <Box
         w={{
