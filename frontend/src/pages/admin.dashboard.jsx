@@ -436,7 +436,11 @@ const AdminDashboard = () => {
                             overflow="hidden"
                           >
                             <Image
-                              src={"/public/uploads/" + event.poster_path}
+                              src={
+                                event.poster_path !== "-"  && event.poster_path !== "undefined"
+                                  ? "/public/uploads/" + event.poster_path
+                                  : "/public/uploads/default/event-pict.jpg"
+                              }
                               alt={event.poster_path}
                               layout="fill"
                               objectFit="cover"

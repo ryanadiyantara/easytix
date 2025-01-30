@@ -147,8 +147,12 @@ const AdminListUser = () => {
                             p="0px"
                           >
                             <Flex direction="row">
-                              <Image
-                                src={"/public/uploads/" + user.profile_picture_path}
+                              <Image                                
+                                src={
+                                  user.profile_picture_path !== "-"  && user.profile_picture_path !== "undefined"
+                                    ? "/public/uploads/" + user.profile_picture_path
+                                    : "/public/uploads/default/profile-pict.jpg"
+                                }
                                 alt={user.profile_picture_path}
                                 boxSize="50px"
                                 objectFit="cover"
