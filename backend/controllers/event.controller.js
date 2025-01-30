@@ -42,6 +42,13 @@ export const createEvents = async (req, res) => {
       return res.status(400).json({ success: false, message: "Please provide all fields" });
     }
 
+    // Check if event name already exists
+    const existingEventName = await Event.findOne({ nama: event.nama });
+
+    if (existingEventName) {
+      return res.status(400).json({ success: false, message: "Event name is already exist" });
+    }
+
     if (req.file) {
       const filePath = path.relative("public/uploads", req.file.path);
       event.poster_path = filePath;
@@ -101,6 +108,13 @@ export const updateEvents = async (req, res) => {
     // Validate the event ID
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ success: false, message: "Invalid Event Id" });
+    }
+
+    // Check if event name already exists
+    const existingEventName = await Event.findOne({ nama: event.nama });
+
+    if (existingEventName) {
+      return res.status(400).json({ success: false, message: "Event name is already exist" });
     }
 
     // Check if a new file is uploaded
