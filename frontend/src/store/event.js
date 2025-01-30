@@ -51,6 +51,7 @@ export const useEventStore = create((set) => ({
     return { success: true, message: "Event created successfully" };
   },
 
+  // Function to fetch all events
   fetchEvent: async () => {
     const res = await fetch("/api/events", {
       method: "GET",
@@ -69,6 +70,7 @@ export const useEventStore = create((set) => ({
     set({ events: data.data });
   },
 
+  // Function to update a event by ID
   updateEvent: async (pid, updatedEvent) => {
     if (
       !updatedEvent.name ||
@@ -115,6 +117,7 @@ export const useEventStore = create((set) => ({
     return { success: true, message: data.message };
   },
 
+  // Function to delete a event by ID
   deleteEvent: async (pid) => {
     const deletedEvent = {
       na: true,

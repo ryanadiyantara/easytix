@@ -4,6 +4,7 @@ import Reservation from "../models/reservation.model.js";
 // Controller to create a new reservation
 export const createReservations = async (req, res) => {
   const reservation = req.body; // user will send this data
+  reservation.status = "Booked";
 
   try {
     // Save new reservation to database

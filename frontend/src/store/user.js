@@ -87,7 +87,7 @@ export const useUserStore = create((set) => ({
 
   // Function to update a user by ID
 
-  // Function to update a user's password by ID
+  // Function to update a user password by ID
   changePassword: async (pid, currentEmail, changedPassword) => {
     if (!changedPassword.old_password || !changedPassword.new_password) {
       return { success: false, message: "Please fill in all fields." };
