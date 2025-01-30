@@ -1,11 +1,12 @@
 import React from "react";
 
-const UserChangePassword = () => {
+const UserProfile = () => {
   return (
     <div>
       <h1>Hello, World!</h1>
+      <h1>User Profile</h1>
     </div>
   );
 };
 
-export default UserChangePassword;
+export default UserProfile;

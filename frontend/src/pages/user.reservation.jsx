@@ -1,12 +1,12 @@
 import React from "react";
 
-const EventDetail = () => {
+const UserReservation = () => {
   return (
     <div>
       <h1>Hello, World!</h1>
-      <h1>User Event Detail</h1>
+      <h1>User Reservation</h1>
     </div>
   );
 };
 
-export default EventDetail;
+export default UserReservation;
