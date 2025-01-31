@@ -38,6 +38,7 @@ const AdminDashboard = () => {
   const iconColor = useColorModeValue("black", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const bgForm = useColorModeValue("white", "navy.800");
+  const hoverColor = useColorModeValue("gray.100", "gray.700");
   const [searchQuery, setSearchQuery] = useState("");
   const [newEvent, setNewEvent] = useState({
     name: "",
@@ -422,7 +423,7 @@ const AdminDashboard = () => {
                     .map((event, index) => (
                       <Tr
                         key={event._id}
-                        _hover={{ backgroundColor: "gray.100", cursor: "pointer" }}
+                        _hover={{ backgroundColor: hoverColor }}
                       >
                         <Td width={{ sm: "50px" }} pl="0px" borderColor={borderColor} py={5}>
                           <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">

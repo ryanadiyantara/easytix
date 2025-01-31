@@ -30,6 +30,7 @@ const AdminListUser = () => {
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const bgForm = useColorModeValue("white", "navy.800");
+  const hoverColor = useColorModeValue("gray.100", "gray.700");
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearchChange = (event) => {
@@ -141,7 +142,7 @@ const AdminListUser = () => {
                       return (
                         <Tr
                           key={user._id}
-                          _hover={{ backgroundColor: "gray.100", cursor: "pointer" }}
+                          _hover={{ backgroundColor: hoverColor }}
                         >
                           <Td
                             borderColor={borderColor}

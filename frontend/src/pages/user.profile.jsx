@@ -143,6 +143,7 @@ const UserProfile = () => {
       >
         <Navbar />
         
+        {/* Content */}
         <Flex alignItems="center" justifyContent="center" mb="60px" mt="20px">
           <Flex
             direction="column"
@@ -276,8 +277,9 @@ const UserProfile = () => {
             </Modal>
           </Flex>
         </Flex>
+
+        <Footer />
       </Box>
-      <Footer />
     </>
   );
 };

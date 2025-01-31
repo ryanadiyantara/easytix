@@ -49,7 +49,7 @@ export const updateReservations = async (req, res) => {
   }
 
   try {
-    // Update the reservation by ID and populate department details
+    // Update the reservation by ID
     const updatedReservation = await Reservation.findByIdAndUpdate(id, reservation, {
       new: true,
     })

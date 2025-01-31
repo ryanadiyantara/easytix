@@ -68,7 +68,7 @@ export const createUsers = async (req, res) => {
 // Controller to get all users
 export const getUsers = async (req, res) => {
   try {
-    // Fetch all users and populate department and position details
+    // Fetch all users
     const users = await User.find({});
 
     res.status(200).json({ success: true, data: users });
@@ -88,7 +88,7 @@ export const getCurrentUsers = async (req, res) => {
   }
 
   try {
-    // Fetch the user by ID and populate department and position details
+    // Fetch the user by ID
     const user = await User.findById(id);
 
     // Check if user exists
@@ -179,7 +179,7 @@ export const updateUsers = async (req, res) => {
     }
 
     try {
-      // Update the user by ID and populate department and position details
+      // Update the user by ID
       const updatedUser = await User.findByIdAndUpdate(id, user, {
         new: true,
       });

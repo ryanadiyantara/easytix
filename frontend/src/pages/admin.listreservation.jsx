@@ -30,10 +30,11 @@ const AdminListReservation = () => {
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const bgForm = useColorModeValue("white", "navy.800");
+  const hoverColor = useColorModeValue("gray.100", "gray.700");
 
   const statusColors = {
     Booked: "green.400",
-    Canceled: "#E53E3E",
+    Cancelled: "#E53E3E",
   };
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -153,7 +154,7 @@ const AdminListReservation = () => {
                       return (
                         <Tr
                           key={reservation._id}
-                          _hover={{ backgroundColor: "gray.100", cursor: "pointer" }}
+                          _hover={{ backgroundColor: hoverColor }}
                         >
                           <Td borderColor={borderColor}>
                             <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
