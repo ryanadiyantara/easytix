@@ -121,24 +121,33 @@ export const updateUsers = async (req, res) => {
       return res.status(404).json({ success: false, message: "Invalid User Id" });
     }
 
-    // Check if email already exists
-    const existingEmail = await User.findOne({ email: user.email });
+    // Check if user exists
+    const existingUser = await User.findById(id);
 
-    if (existingEmail) {
-      if (req.file) {
-        fs.unlink(req.file.path, (unlinkErr) => {
-          if (unlinkErr) {
-            console.error("Failed to delete file:", unlinkErr);
-          }
-        });
+    if (!existingUser) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Check if email is being changed
+    if (user.email && user.email !== existingUser.email) {
+      const emailExists = await User.findOne({ email: user.email });
+
+      if (emailExists) {
+        if (req.file) {
+          fs.unlink(req.file.path, (unlinkErr) => {
+            if (unlinkErr) {
+              console.error("Failed to delete file:", unlinkErr);
+            }
+          });
+        }
+        return res.status(400).json({ success: false, message: "Email is already taken" });
       }
-      return res.status(400).json({ success: false, message: "Email is already taken" });
     }
 
     // Check if a new file is uploaded
     if (req.file) {
       const filePath = path.relative("public/uploads", req.file.path);
-      user.profilePicture = filePath;
+      user.profile_picture_path = filePath;
     }
 
     // Check if password needs to be updated

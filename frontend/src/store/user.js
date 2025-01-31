@@ -26,6 +26,7 @@ export const useUserStore = create((set) => ({
   currentUser: userInfo,
   currentUsers: [],
   setUser: (users) => set({ users }),
+  setUser: (currentUsers) => set({ currentUsers }),
 
   // Function to create a new user
   createUser: async (newUser) => {
@@ -86,6 +87,38 @@ export const useUserStore = create((set) => ({
   },
 
   // Function to update a user by ID
+  updateUser: async (pid, updatedUser) => {
+    if (!updatedUser.name || !updatedUser.email) {
+      return { success: false, message: "Please fill in all fields." };
+    }
+
+    const formData = new FormData();
+    formData.append("name", updatedUser.name);
+    formData.append("email", updatedUser.email);
+    formData.append("file", updatedUser.profilePict);
+
+    const res = await fetch(`/api/users/${pid}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (res.status === 401 || res.status === 403) {
+      window.location.href = `/signin?message=Session Expired`;
+      return;
+    }
+
+    const data = await res.json();
+    if (!data.success) return { success: false, message: data.message };
+
+    // update the ui immediately, without needing a refresh
+    set((state) => ({
+      users: state.users.map((user) => (user._id === pid ? data.data : user)),
+    }));
+    return { success: true, message: data.message };
+  },
 
   // Function to update a user password by ID
   changePassword: async (pid, currentEmail, changedPassword) => {
@@ -120,8 +153,6 @@ export const useUserStore = create((set) => ({
     }));
     return { success: true, message: data.message };
   },
-
-  // Update User / Admin
 
   // Auth functions
   // Function to signin a user

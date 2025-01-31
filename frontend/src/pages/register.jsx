@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// Chakra imports
 import {
   Box,
   Button,
@@ -49,11 +48,9 @@ const Register = () => {
       email: !newUser.email,
       user_password: !newUser.user_password,
     };
-
     setErrors(currentErrors);
 
     newUser.role = "User";
-
     const { success, message } = await createUser(newUser);
 
     if (success) {
@@ -106,7 +103,7 @@ const Register = () => {
           bgSize="cover"
           mx={{ md: "auto" }}
           mt={{ md: "14px" }}
-        ></Box>
+        />
         <Flex
           direction="column"
           textAlign="center"
