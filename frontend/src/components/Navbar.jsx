@@ -37,7 +37,6 @@ function Navbar() {
     { path: "/admin/changepassword", name: "Change Password", category: "" },
     { path: "/dashboard", name: "Dashboard", category: "" },
     { path: "/profile", name: "Profile", category: "" },
-    { path: "/events", name: "Event List", category: "" },
     { path: "/events/detail", name: "Event Detail", category: "" },
     { path: "/reservation", name: "Reservation", category: "" },
   ];
@@ -139,7 +138,10 @@ function Navbar() {
         <Box mb={{ sm: "8px", md: "0px" }}>
           <Breadcrumb>
             <BreadcrumbItem color={"gray.500"}>
-              <BreadcrumbLink href={isUserSession ? "/admin/dashboard" : "/dashboard"} color={"gray.500"}>
+              <BreadcrumbLink
+                href={isUserSession ? "/admin/dashboard" : "/dashboard"}
+                color={"gray.500"}
+              >
                 Pages
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -188,10 +190,7 @@ function Navbar() {
           flexDirection="row"
           justifyContent="flex-end"
         >
-          
-          {isUserSession && (
-            <SidebarResponsive />
-          )}
+          {isUserSession && <SidebarResponsive />}
           <SettingsIcon
             cursor="pointer"
             color={useColorModeValue("black", "white")}

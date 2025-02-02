@@ -11,7 +11,6 @@ import AdminListReservation from "./pages/admin.listreservation";
 import AdminChangePassword from "./pages/admin.changepassword";
 import UserDashboard from "./pages/user.dashboard";
 import UserProfile from "./pages/user.profile";
-import EventList from "./pages/user.eventlist";
 import EventDetail from "./pages/user.eventdetail";
 import MyReservation from "./pages/user.reservation";
 
@@ -31,7 +30,6 @@ function App() {
           <Route path="/admin/changepassword" element={<AdminChangePassword />} />
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/profile" element={<UserProfile />} />
-          <Route path="/events" element={<EventList />} />
           <Route path="/events/detail" element={<EventDetail />} />
           <Route path="/reservation" element={<MyReservation />} />
         </Routes>

@@ -43,7 +43,7 @@ export const createEvents = async (req, res) => {
     }
 
     // Check if event name already exists
-    const existingEventName = await Event.findOne({ nama: event.nama });
+    const existingEventName = await Event.findOne({ name: event.name });
 
     if (existingEventName) {
       return res.status(400).json({ success: false, message: "Event name is already exist" });
@@ -110,11 +110,23 @@ export const updateEvents = async (req, res) => {
       return res.status(404).json({ success: false, message: "Invalid Event Id" });
     }
 
-    // Check if event name already exists
-    const existingEventName = await Event.findOne({ nama: event.nama });
+    // Check if event exists
+    const existingEvent = await Event.findById(id);
 
-    if (existingEventName) {
-      return res.status(400).json({ success: false, message: "Event name is already exist" });
+    // Check if email is being changed
+    if (event.name && event.name !== existingEvent.name) {
+      const nameExists = await Event.findOne({ name: event.name });
+
+      if (nameExists) {
+        if (req.file) {
+          fs.unlink(req.file.path, (unlinkErr) => {
+            if (unlinkErr) {
+              console.error("Failed to delete file:", unlinkErr);
+            }
+          });
+        }
+        return res.status(400).json({ success: false, message: "Name is already taken" });
+      }
     }
 
     // Check if a new file is uploaded
