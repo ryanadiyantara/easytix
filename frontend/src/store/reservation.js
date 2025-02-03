@@ -8,8 +8,8 @@ export const useReservationStore = create((set) => ({
 
   // Function to create a new reservation
   createReservation: async (pid, newReservation) => {
-    if (!newReservation.quantity || !newReservation.event_id) {
-      return { success: false, message: "Please fill in all fields." };
+    if (!newReservation.event_id) {
+      return { success: false, message: "Event not found" };
     }
 
     newReservation.user_id = pid;

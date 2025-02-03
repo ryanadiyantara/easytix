@@ -5,6 +5,7 @@ import Reservation from "../models/reservation.model.js";
 export const createReservations = async (req, res) => {
   const reservation = req.body; // user will send this data
   reservation.status = "Booked";
+  reservation.quantity = 1;
   reservation.reservation_date = new Date();
 
   try {

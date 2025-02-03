@@ -53,7 +53,6 @@ export const createEvents = async (req, res) => {
       event.poster_path = filePath;
     }
 
-    event.available_quantity = event.quantity;
     event.status = "Ready";
 
     try {

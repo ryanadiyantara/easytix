@@ -17,6 +17,10 @@ import {
   ModalBody,
   ModalFooter,
   Textarea,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  IconButton,
 } from "@chakra-ui/react";
 
 import Background from "../components/Background";
@@ -27,6 +31,7 @@ import { useUserStore } from "../store/user";
 import { useEventStore } from "../store/event";
 import { useReservationStore } from "../store/reservation";
 import { useNavigate, useParams } from "react-router-dom";
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 const EventDetail = () => {
   // Utils
@@ -85,11 +90,6 @@ const EventDetail = () => {
   }, [eventById]);
 
   const handleSubmit = async () => {
-    const currentErrors = {
-      quantity: !newEvent.quantity,
-    };
-    setErrors(currentErrors);
-
     newEvent.event_id = eventById._id;
 
     const { success, message } = await createReservation(currentUsers._id, newEvent);
@@ -249,22 +249,6 @@ const EventDetail = () => {
                 _disabled={{ bg: "gray.100", cursor: "not-allowed" }}
                 overflow="hidden"
                 whiteSpace="pre-wrap" // Agar teks panjang tidak terpotong
-              />
-
-              <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                Quantity
-              </FormLabel>
-              <Input
-                fontSize="sm"
-                ms="4px"
-                borderRadius="15px"
-                type="number"
-                name="quantity"
-                mb="24px"
-                size="lg"
-                value={newEvent.quantity}
-                onChange={(e) => setNewEvent({ ...newEvent, quantity: e.target.value })}
-                borderColor={errors.quantity ? "red.500" : "gray.200"}
               />
               <Button
                 type="submit"
