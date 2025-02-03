@@ -28,7 +28,7 @@ import { useUserStore } from "../store/user";
 const UserProfile = () => {
   // Utils
   const { currentUsers, fetchCurrentUser, updateUser } = useUserStore();
-  
+
   const toast = useToast();
   const bgColor = useColorModeValue("white", "gray.700");
   const [newUser, setNewUser] = useState({
@@ -91,7 +91,7 @@ const UserProfile = () => {
     if (currentUsers) {
       setNewUser({
         name: currentUsers.name || "",
-        email: currentUsers.email || ""
+        email: currentUsers.email || "",
       });
     }
   }, [currentUsers]);
@@ -115,7 +115,9 @@ const UserProfile = () => {
       });
       document.querySelector('input[type="file"]').value = "";
       setIsOpen(false);
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } else {
       toast({
         title: "Error",
@@ -129,7 +131,7 @@ const UserProfile = () => {
 
   return (
     <>
-      <Background/>
+      <Background />
       <Box
         w="100%"
         maxWidth="100%"
@@ -142,7 +144,7 @@ const UserProfile = () => {
         transitionTimingFunction="linear, linear, ease"
       >
         <Navbar />
-        
+
         {/* Content */}
         <Flex alignItems="center" justifyContent="center" mb="60px" mt="20px">
           <Flex
@@ -155,15 +157,11 @@ const UserProfile = () => {
             bg={bgColor}
             boxShadow="0 20px 27px 0 rgb(0 0 0 / 5%)"
           >
-            <Flex
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              mb="24px" 
-            >
+            <Flex direction="column" alignItems="center" justifyContent="center" mb="24px">
               <Image
                 src={
-                  currentUsers.profile_picture_path !== "-"  && currentUsers.profile_picture_path !== "undefined"
+                  currentUsers.profile_picture_path !== "-" &&
+                  currentUsers.profile_picture_path !== "undefined"
                     ? "/public/uploads/" + currentUsers.profile_picture_path
                     : "/public/uploads/default/profile-pict.jpg"
                 }
@@ -253,7 +251,7 @@ const UserProfile = () => {
                 UPDATE
               </Button>
             </FormControl>
-            
+
             {/* Modal Update */}
             <Modal isOpen={isOpen} onClose={handleClose} motionPreset="slideInBottom">
               <ModalOverlay bg="blackAlpha.800" backdropFilter="blur(2px)" />
@@ -261,9 +259,7 @@ const UserProfile = () => {
                 <ModalHeader>Update Profile</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                  <p>
-                    Are you sure you want to update your profile? This action cannot be undone.
-                  </p>
+                  <p>Are you sure you want to update your profile? This action cannot be undone.</p>
                 </ModalBody>
                 <ModalFooter>
                   <Button colorScheme="gray" mr={3} onClick={handleClose}>
