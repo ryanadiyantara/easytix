@@ -36,7 +36,6 @@ export const createEvents = async (req, res) => {
       !event.end_date ||
       !event.venue ||
       !event.description ||
-      !event.categories ||
       !event.quantity
     ) {
       return res.status(400).json({ success: false, message: "Please provide all fields" });

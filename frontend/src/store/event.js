@@ -14,7 +14,6 @@ export const useEventStore = create((set) => ({
       !newEvent.end_date ||
       !newEvent.venue ||
       !newEvent.description ||
-      !newEvent.categories ||
       !newEvent.quantity
     ) {
       return { success: false, message: "Please fill in all fields." };
@@ -26,7 +25,6 @@ export const useEventStore = create((set) => ({
     formData.append("end_date", newEvent.end_date);
     formData.append("venue", newEvent.venue);
     formData.append("description", newEvent.description);
-    formData.append("categories", newEvent.categories);
     formData.append("file", newEvent.poster);
     formData.append("quantity", newEvent.quantity);
 
@@ -78,7 +76,6 @@ export const useEventStore = create((set) => ({
       !updatedEvent.end_date ||
       !updatedEvent.venue ||
       !updatedEvent.description ||
-      !updatedEvent.categories ||
       !updatedEvent.quantity
     ) {
       return { success: false, message: "Please fill in all fields." };
@@ -90,7 +87,6 @@ export const useEventStore = create((set) => ({
     formData.append("end_date", updatedEvent.end_date);
     formData.append("venue", updatedEvent.venue);
     formData.append("description", updatedEvent.description);
-    formData.append("categories", updatedEvent.categories);
     formData.append("file", updatedEvent.poster);
     formData.append("quantity", updatedEvent.quantity);
 
