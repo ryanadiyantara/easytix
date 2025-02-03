@@ -138,14 +138,7 @@ function Navbar() {
         <Box mb={{ sm: "8px", md: "0px" }}>
           <Breadcrumb>
             <BreadcrumbItem color={"gray.500"}>
-<<<<<<< HEAD
               <BreadcrumbLink href={isUserSession ? "/dashboard" : "/admin/dashboard"} color={"gray.500"}>
-=======
-              <BreadcrumbLink
-                href={isUserSession ? "/admin/dashboard" : "/dashboard"}
-                color={"gray.500"}
-              >
->>>>>>> e67b1862e05488da66e7a5c98a4dd72c14ed341c
                 Pages
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -194,7 +187,6 @@ function Navbar() {
           flexDirection="row"
           justifyContent="flex-end"
         >
-<<<<<<< HEAD
           
           {!isUserSession && (
             <SidebarResponsive />
@@ -212,9 +204,6 @@ function Navbar() {
             </NavLink>
           )}
 
-=======
-          {isUserSession && <SidebarResponsive />}
->>>>>>> e67b1862e05488da66e7a5c98a4dd72c14ed341c
           <SettingsIcon
             cursor="pointer"
             color={useColorModeValue("black", "white")}

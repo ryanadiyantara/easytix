@@ -5,10 +5,6 @@ import {
   Flex,
   Icon,
   Spacer,
-  FormControl,
-  FormLabel,
-  Input,
-  useToast,
   useColorModeValue,
   Text,
   Card,
@@ -16,6 +12,7 @@ import {
   CardBody,
   VStack,
   Grid,
+  Input,
 } from "@chakra-ui/react";
 
 import { BsArrowRight } from "react-icons/bs";
@@ -25,6 +22,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 import { useEventStore } from "../store/event";
+import { Link } from "react-router-dom";
 
 const UserDashboard = () => {
   // Utils
@@ -74,17 +72,38 @@ const UserDashboard = () => {
                 <Text fontSize="xl" color={textColor} fontWeight="bold">
                   Event List
                 </Text>
-                <Box>
-                  <Input
-                    placeholder="Search on list.."
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    size="sm"
+                <Flex
+                  align="center"
+                  justify="space-between"
+                  p="0px"
+                  gap={{ base: "0px", md: "20px" }}
+                >
+                  <Button
+                    fontSize="xs"
+                    as={Link}
+                    to="/reservation"
+                    bg="teal.300"
+                    color="white"
+                    maxH="30px"
                     borderRadius="5px"
-                    w={{ base: "85%", md: "100%" }}
-                    ml={{ base: "15%", md: "0%" }}
-                  />
-                </Box>
+                    _hover={{
+                      bg: "teal.200",
+                    }}
+                  >
+                    My Reservation
+                  </Button>
+                  <Box>
+                    <Input
+                      placeholder="Search on list.."
+                      value={searchQuery}
+                      onChange={handleSearchChange}
+                      size="sm"
+                      borderRadius="5px"
+                      w={{ base: "85%", md: "100%" }}
+                      ml={{ base: "15%", md: "0%" }}
+                    />
+                  </Box>
+                </Flex>
               </Flex>
             </CardHeader>
             <CardBody pl="6px">

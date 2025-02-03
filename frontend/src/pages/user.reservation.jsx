@@ -185,7 +185,8 @@ const UserReservation = () => {
                 </Thead>
                 <Tbody>
                   {reservations
-                    .filter((reservation) => reservation.user_id.toString() === currentUsers.toString())
+                    .filter((reservation) => reservation.user_id._id === currentUsers?._id)
+                    // .filter((reservation) => String(reservation.user_id._id) === String(currentUsers?._id))
                     .filter((reservation) => {
                       const reservationDate = new Date(reservation.reservation_date);
 
