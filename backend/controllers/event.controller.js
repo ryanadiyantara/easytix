@@ -91,6 +91,29 @@ export const getEvents = async (req, res) => {
   }
 };
 
+// Controller to get event by ID
+export const getEventById = async (req, res) => {
+  const { id } = req.params;
+
+  // Validate the event ID
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ success: false, message: "Invalid Event ID" });
+  }
+
+  try {
+    // Fetch the event by ID
+    const event = await Event.findById(id);
+    // Check if event exists
+    if (!event) {
+      return res.status(404).json({ success: false, message: "Event not found" });
+    }
+    res.status(200).json({ success: true, data: event });
+  } catch (error) {
+    console.log("Error in Fetching events:", error.message);
+    res.status(404).json({ success: false, message: "Server Error" });
+  }
+};
+
 // Controller to update a event by ID
 export const updateEvents = async (req, res) => {
   upload(req, res, async (err) => {

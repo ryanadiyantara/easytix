@@ -30,7 +30,7 @@ function App() {
           <Route path="/admin/changepassword" element={<AdminChangePassword />} />
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/profile" element={<UserProfile />} />
-          <Route path="/events/detail" element={<EventDetail />} />
+          <Route path="/events/detail/:id" element={<EventDetail />} />
           <Route path="/reservation" element={<MyReservation />} />
         </Routes>
       </Box>

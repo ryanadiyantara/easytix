@@ -17,7 +17,7 @@ import {
   useColorMode,
   useToast,
 } from "@chakra-ui/react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { matchPath, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import { ProfileIcon, SettingsIcon } from "./Icons/Icons";
 import { HSeparator } from "./Separator";
@@ -37,7 +37,7 @@ function Navbar() {
     { path: "/admin/changepassword", name: "Change Password", category: "" },
     { path: "/dashboard", name: "Dashboard", category: "" },
     { path: "/profile", name: "Profile", category: "" },
-    { path: "/events/detail", name: "Event Detail", category: "" },
+    { path: "/events/detail/:id", name: "Event Detail", category: "" },
     { path: "/reservation", name: "Reservation", category: "" },
   ];
 
@@ -46,7 +46,8 @@ function Navbar() {
   const navigate = useNavigate();
   const [isUserLoaded, setIsUserLoaded] = useState(false);
   const [isUserSession, setIsUserSession] = useState(false);
-  const activeRoute = routes.find((route) => route.path === location.pathname);
+  const activeRoute = routes.find((route) => matchPath(route.path, location.pathname)) || {};
+
   const { colorMode, toggleColorMode } = useColorMode();
   const handleOpenDrawer = () => setIsOpen(true);
   const handleCloseDrawer = () => setIsOpen(false);
@@ -138,7 +139,10 @@ function Navbar() {
         <Box mb={{ sm: "8px", md: "0px" }}>
           <Breadcrumb>
             <BreadcrumbItem color={"gray.500"}>
-              <BreadcrumbLink href={isUserSession ? "/dashboard" : "/admin/dashboard"} color={"gray.500"}>
+              <BreadcrumbLink
+                href={isUserSession ? "/dashboard" : "/admin/dashboard"}
+                color={"gray.500"}
+              >
                 Pages
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -187,10 +191,7 @@ function Navbar() {
           flexDirection="row"
           justifyContent="flex-end"
         >
-          
-          {!isUserSession && (
-            <SidebarResponsive />
-          )}
+          {!isUserSession && <SidebarResponsive />}
 
           {isUserSession && (
             <NavLink to="/profile">

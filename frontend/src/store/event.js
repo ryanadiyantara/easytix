@@ -4,6 +4,7 @@ const token = localStorage.getItem("accessToken");
 
 export const useEventStore = create((set) => ({
   events: [],
+  eventById: [],
   setEvent: (events) => set({ events }),
 
   // Function to create a new event
@@ -66,6 +67,25 @@ export const useEventStore = create((set) => ({
     const data = await res.json();
 
     set({ events: data.data });
+  },
+
+  // Function to fetch a event by ID
+  fetchEventById: async (pid) => {
+    const res = await fetch(`/api/events/${pid}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 401 || res.status === 403) {
+      window.location.href = `/signin?message=Session Expired`;
+      return;
+    }
+
+    const data = await res.json();
+
+    set({ eventById: data.data });
   },
 
   // Function to update a event by ID

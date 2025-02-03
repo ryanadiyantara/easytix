@@ -30,7 +30,6 @@ const Register = () => {
   const textColor = useColorModeValue("gray.700", "white");
   const bgColor = useColorModeValue("white", "gray.700");
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const [newUser, setNewUser] = useState({
     name: "",
     email: "",

@@ -5,6 +5,7 @@ import Reservation from "../models/reservation.model.js";
 export const createReservations = async (req, res) => {
   const reservation = req.body; // user will send this data
   reservation.status = "Booked";
+  reservation.reservation_date = new Date();
 
   try {
     // Save new reservation to database
@@ -18,7 +19,7 @@ export const createReservations = async (req, res) => {
 
     res.status(201).json({ success: true, data: populatedReservation });
   } catch (error) {
-    console.error("Error in Create reservation:", error, message);
+    console.error("Error in Create reservation:", error);
     res.status(500).json({ success: false, message: "Server Error" });
   }
 };
