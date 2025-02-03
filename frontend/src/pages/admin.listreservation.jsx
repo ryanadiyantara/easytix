@@ -152,10 +152,7 @@ const AdminListReservation = () => {
                     })
                     .map((reservation) => {
                       return (
-                        <Tr
-                          key={reservation._id}
-                          _hover={{ backgroundColor: hoverColor }}
-                        >
+                        <Tr key={reservation._id} _hover={{ backgroundColor: hoverColor }}>
                           <Td borderColor={borderColor}>
                             <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
                               {reservation.user_id.user_id}

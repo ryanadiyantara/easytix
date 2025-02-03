@@ -140,19 +140,17 @@ const AdminListUser = () => {
                     })
                     .map((user) => {
                       return (
-                        <Tr
-                          key={user._id}
-                          _hover={{ backgroundColor: hoverColor }}
-                        >
+                        <Tr key={user._id} _hover={{ backgroundColor: hoverColor }}>
                           <Td
                             borderColor={borderColor}
                             width={{ base: "100px", xl: "300px" }}
                             p="0px"
                           >
                             <Flex direction="row">
-                              <Image                                
+                              <Image
                                 src={
-                                  user.profile_picture_path !== "-"  && user.profile_picture_path !== "undefined"
+                                  user.profile_picture_path !== "-" &&
+                                  user.profile_picture_path !== "undefined"
                                     ? "/public/uploads/" + user.profile_picture_path
                                     : "/public/uploads/default/profile-pict.jpg"
                                 }
