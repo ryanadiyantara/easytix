@@ -184,7 +184,14 @@ const UserDashboard = () => {
                           </Text>
                           <Spacer />
                           <Flex align="center" mt={{ sm: "20px", lg: "40px", xl: "90px" }}>
-                            <Button p="0px" variant="no-hover" bg="transparent" mt="12px">
+                            <Button
+                              as={Link}
+                              to={`/events/detail/${event._id}`}
+                              p="0px"
+                              variant="no-hover"
+                              bg="transparent"
+                              mt="12px"
+                            >
                               <Text
                                 fontSize="sm"
                                 fontWeight="bold"

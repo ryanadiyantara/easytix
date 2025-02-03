@@ -38,7 +38,7 @@ const UserReservation = () => {
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const bgForm = useColorModeValue("white", "navy.800");
   const hoverColor = useColorModeValue("gray.100", "gray.700");
-  
+
   const statusColors = {
     Booked: "green.400",
     Cancelled: "#E53E3E",
@@ -144,9 +144,9 @@ const UserReservation = () => {
           >
             <Flex align="center" justify="space-between" p="6px 0px 22px 0px">
               <Text fontSize="xl" color={textColor} fontWeight="bold">
-                My Reservation List 
+                My Reservation List
               </Text>
-              
+
               <Flex
                 align="center"
                 justify="space-between"
@@ -232,10 +232,7 @@ const UserReservation = () => {
                     })
                     .map((reservation) => {
                       return (
-                        <Tr
-                          key={reservation._id}
-                          _hover={{ backgroundColor: hoverColor }}
-                        >
+                        <Tr key={reservation._id} _hover={{ backgroundColor: hoverColor }}>
                           <Td borderColor={borderColor}>
                             <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
                               {reservation.user_id.user_id}
@@ -285,7 +282,9 @@ const UserReservation = () => {
                               gap="1"
                               as="button"
                               onClick={() => openCancelModal(reservation._id)}
-                              cursor={reservation.status === "Cancelled" ? "not-allowed" : "pointer"}
+                              cursor={
+                                reservation.status === "Cancelled" ? "not-allowed" : "pointer"
+                              }
                               opacity={reservation.status === "Cancelled" ? 0.5 : 1}
                               pointerEvents={reservation.status === "Cancelled" ? "none" : "auto"}
                             >
@@ -301,7 +300,8 @@ const UserReservation = () => {
                               title="Cancel Event"
                               bodyContent={
                                 <p>
-                                  Please note that this action cannot be undone. To cancel this reservation, type{" "}
+                                  Please note that this action cannot be undone. To cancel this
+                                  reservation, type{" "}
                                   <span style={{ fontWeight: "bold" }}>CONFIRM</span>.
                                 </p>
                               }
