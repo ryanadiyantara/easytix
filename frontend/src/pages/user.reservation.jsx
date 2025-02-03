@@ -144,6 +144,20 @@ const UserReservation = () => {
               <Text fontSize="xl" color={textColor} fontWeight="bold">
                 My Reservation List 
               </Text>
+              <Button
+                fontSize="xs"
+                as={Link}
+                to="/reservation"
+                bg="teal.300"
+                color="white"
+                maxH="30px"
+                borderRadius="5px"
+                _hover={{
+                  bg: "teal.200",
+                }}
+              >
+                My Reservation
+              </Button>
               <Box>
                 <Input
                   placeholder="Search on list.."
@@ -186,7 +200,6 @@ const UserReservation = () => {
                 <Tbody>
                   {reservations
                     .filter((reservation) => reservation.user_id._id === currentUsers?._id)
-                    // .filter((reservation) => String(reservation.user_id._id) === String(currentUsers?._id))
                     .filter((reservation) => {
                       const reservationDate = new Date(reservation.reservation_date);
 
