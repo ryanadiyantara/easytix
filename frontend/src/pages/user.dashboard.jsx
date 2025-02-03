@@ -81,7 +81,7 @@ const UserDashboard = () => {
                   <Button
                     fontSize="xs"
                     as={Link}
-                    to="/dashboard"
+                    to="/reservation"
                     bg="teal.300"
                     color="white"
                     maxH="30px"
@@ -90,7 +90,7 @@ const UserDashboard = () => {
                       bg: "teal.200",
                     }}
                   >
-                    Dashboard
+                    My Reservation
                   </Button>
                   <Box>
                     <Input

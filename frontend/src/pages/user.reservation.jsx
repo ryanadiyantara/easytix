@@ -15,6 +15,7 @@ import {
   Input,
   Badge,
   useToast,
+  Button,
 } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 
@@ -25,6 +26,7 @@ import Footer from "../components/Footer";
 
 import { useReservationStore } from "../store/reservation";
 import { useUserStore } from "../store/user";
+import { Link } from "react-router-dom";
 
 const UserReservation = () => {
   // Utils
@@ -144,31 +146,39 @@ const UserReservation = () => {
               <Text fontSize="xl" color={textColor} fontWeight="bold">
                 My Reservation List 
               </Text>
-              <Button
-                fontSize="xs"
-                as={Link}
-                to="/reservation"
-                bg="teal.300"
-                color="white"
-                maxH="30px"
-                borderRadius="5px"
-                _hover={{
-                  bg: "teal.200",
-                }}
+              
+              <Flex
+                align="center"
+                justify="space-between"
+                p="0px"
+                gap={{ base: "0px", md: "20px" }}
               >
-                My Reservation
-              </Button>
-              <Box>
-                <Input
-                  placeholder="Search on list.."
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  size="sm"
+                <Button
+                  fontSize="xs"
+                  as={Link}
+                  to="/dashboard"
+                  bg="teal.300"
+                  color="white"
+                  maxH="30px"
                   borderRadius="5px"
-                  w={{ base: "85%", md: "100%" }}
-                  ml={{ base: "15%", md: "0%" }}
-                />
-              </Box>
+                  _hover={{
+                    bg: "teal.200",
+                  }}
+                >
+                  Dashboard
+                </Button>
+                <Box>
+                  <Input
+                    placeholder="Search on list.."
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    size="sm"
+                    borderRadius="5px"
+                    w={{ base: "85%", md: "100%" }}
+                    ml={{ base: "15%", md: "0%" }}
+                  />
+                </Box>
+              </Flex>
             </Flex>
             <Box>
               <Table variant="simple" color={textColor}>
