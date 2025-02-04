@@ -17,10 +17,6 @@ import {
   ModalBody,
   ModalFooter,
   Textarea,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  IconButton,
 } from "@chakra-ui/react";
 
 import Background from "../components/Background";
@@ -31,14 +27,13 @@ import { useUserStore } from "../store/user";
 import { useEventStore } from "../store/event";
 import { useReservationStore } from "../store/reservation";
 import { useNavigate, useParams } from "react-router-dom";
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 const EventDetail = () => {
   // Utils
   const { id } = useParams();
   const { currentUsers, fetchCurrentUser } = useUserStore();
   const { eventById, fetchEventById } = useEventStore();
-  const { createReservation } = useReservationStore();
+  const { reservations, createReservation, fetchReservation } = useReservationStore();
 
   const toast = useToast();
   const bgColor = useColorModeValue("white", "gray.700");
@@ -54,7 +49,6 @@ const EventDetail = () => {
     quantity: "",
   });
 
-  const [errors, setErrors] = useState({});
   const [isOpen, setIsOpen] = useState(false);
 
   const openApprovalModal = () => {
@@ -68,7 +62,8 @@ const EventDetail = () => {
   // Services
   useEffect(() => {
     fetchCurrentUser();
-  }, [fetchCurrentUser]);
+    fetchReservation();
+  }, [fetchCurrentUser, fetchReservation]);
 
   useEffect(() => {
     if (id) {
@@ -116,6 +111,13 @@ const EventDetail = () => {
       setIsOpen(false);
     }
   };
+
+  const totalReserved = reservations
+    .filter((reservation) => reservation.event_id._id === eventById._id)
+    .reduce((acc, reservation) => acc + reservation.quantity, 0);
+
+  const remainingTickets = eventById.quantity - totalReserved;
+  const isEventSoldOut = remainingTickets <= 0;
 
   return (
     <>
@@ -250,25 +252,61 @@ const EventDetail = () => {
                 overflow="hidden"
                 whiteSpace="pre-wrap" // Agar teks panjang tidak terpotong
               />
-              <Button
-                type="submit"
-                bg="teal.300"
-                fontSize="14px"
-                color="white"
-                fontWeight="bold"
-                w="100%"
-                h="45"
-                mb="24px"
-                _hover={{
-                  bg: "teal.200",
-                }}
-                _active={{
-                  bg: "teal.400",
-                }}
-                onClick={() => openApprovalModal()}
-              >
-                BOOK NOW
-              </Button>
+              {/* Button jika tiket sudah habis */}
+              {isEventSoldOut ? (
+                <>
+                  <Button
+                    bg="teal.300"
+                    fontSize="14px"
+                    fontWeight="bold"
+                    w="100%"
+                    h="45"
+                    mb="24px"
+                    isDisabled
+                  >
+                    SOLDOUT
+                  </Button>
+                  <Button
+                    fontSize="14px"
+                    variant="solid"
+                    fontWeight="bold"
+                    w="100%"
+                    h="45"
+                    mb="24px"
+                    colorScheme="gray"
+                    onClick={() => navigate("/dashboard")}
+                  >
+                    BACK TO DASHBOARD
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    type="submit"
+                    bg="teal.300"
+                    fontSize="14px"
+                    fontWeight="bold"
+                    w="100%"
+                    h="45"
+                    mb="24px"
+                    onClick={() => openApprovalModal()}
+                  >
+                    BOOK NOW
+                  </Button>
+                  <Button
+                    fontSize="14px"
+                    variant="solid"
+                    fontWeight="bold"
+                    w="100%"
+                    h="45"
+                    mb="24px"
+                    colorScheme="gray"
+                    onClick={() => navigate("/dashboard")}
+                  >
+                    CANCEL
+                  </Button>
+                </>
+              )}
             </FormControl>
 
             {/* Modal Confirmation */}

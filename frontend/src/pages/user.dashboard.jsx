@@ -22,11 +22,13 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 import { useEventStore } from "../store/event";
+import { useReservationStore } from "../store/reservation";
 import { Link } from "react-router-dom";
 
 const UserDashboard = () => {
   // Utils
   const { events, fetchEvent } = useEventStore();
+  const { reservations, fetchReservation } = useReservationStore();
 
   const textColor = useColorModeValue("gray.700", "white");
   const [searchQuery, setSearchQuery] = useState("");
@@ -38,7 +40,8 @@ const UserDashboard = () => {
   // Services
   useEffect(() => {
     fetchEvent();
-  }, [fetchEvent]);
+    fetchReservation();
+  }, [fetchEvent, fetchReservation]);
 
   return (
     <>
@@ -146,78 +149,131 @@ const UserDashboard = () => {
                     );
                   })
                   .sort((a, b) => new Date(a.start_date) - new Date(b.start_date))
-                  .map((event, index) => (
-                    <Box key={event._id} maxHeight="400px" p="1rem">
-                      <Box
-                        p="0px"
-                        backgroundImage={`url(${
-                          event.poster_path !== "-" && event.poster_path !== "undefined"
-                            ? "/public/uploads/" + event.poster_path.replace(/\\/g, "/")
-                            : "/public/uploads/default/event-pict.jpg"
-                        })`}
-                        bgPosition="center"
-                        bgRepeat="no-repeat"
-                        w="100%"
-                        h={{ sm: "200px", lg: "100%" }}
-                        bgSize="cover"
-                        position="relative"
-                        borderRadius="15px"
-                      >
-                        <Flex
-                          flexDirection="column"
-                          color="white"
-                          p="1.5rem 1.2rem 0.3rem 1.2rem"
-                          lineHeight="1.6"
+                  .map((event) => {
+                    const ticketId = event._id;
+                    const totalReserved = reservations
+                      .filter((reservation) => reservation.event_id._id === ticketId)
+                      .filter((reservation) => reservation.status === "Booked")
+                      .reduce((acc, reservation) => acc + reservation.quantity, 0);
+
+                    const remainingTickets = event.quantity - totalReserved;
+
+                    return (
+                      <Box key={event._id} maxHeight="400px" p="1rem">
+                        <Box
+                          p="0px"
+                          backgroundImage={`url(${
+                            event.poster_path !== "-" && event.poster_path !== "undefined"
+                              ? "/public/uploads/" + event.poster_path.replace(/\\/g, "/")
+                              : "/public/uploads/default/event-pict.jpg"
+                          })`}
+                          bgPosition="center"
+                          bgRepeat="no-repeat"
+                          w="100%"
+                          h={{ sm: "200px", lg: "250px" }}
+                          bgSize="cover"
+                          position="relative"
+                          borderRadius="15px"
                         >
-                          <Text fontSize="xl" fontWeight="bold" pb=".3rem">
-                            {event.name}
-                          </Text>
-                          <Text fontSize="sm" fontWeight="normal" w={{ lg: "92%" }}>
-                            {new Date(event.start_date)
-                              .toLocaleDateString("en-GB", {
-                                weekday: "long",
-                                day: "2-digit",
-                                month: "long",
-                                year: "numeric",
-                              })
-                              .replace(" ", ", ")}
-                          </Text>
-                          <Spacer />
-                          <Flex align="center" mt={{ sm: "20px", lg: "40px", xl: "90px" }}>
-                            <Button
-                              as={Link}
-                              to={`/events/detail/${event._id}`}
-                              p="0px"
-                              variant="no-hover"
-                              bg="transparent"
-                              mt="12px"
-                            >
-                              <Text
-                                fontSize="sm"
-                                fontWeight="bold"
-                                _hover={{ me: "4px" }}
-                                transition="all .5s ease"
-                              >
-                                Detail
+                          <Flex
+                            flexDirection="column"
+                            color="white"
+                            justify="space-between"
+                            p="1.5rem 1.2rem 0.3rem 1.2rem"
+                            lineHeight="1.6"
+                            h="100%"
+                          >
+                            <Box>
+                              <Text fontSize="xl" fontWeight="bold" pb=".3rem">
+                                {event.name}
                               </Text>
-                              <Icon
-                                as={BsArrowRight}
-                                w="20px"
-                                h="20px"
-                                fontSize="xl"
-                                transition="all .5s ease"
-                                mx=".3rem"
-                                cursor="pointer"
-                                _hover={{ transform: "translateX(20%)" }}
-                                pt="4px"
-                              />
-                            </Button>
+                              <Text fontSize="sm" fontWeight="normal" w={{ lg: "92%" }}>
+                                {(() => {
+                                  const startDate = new Date(event.start_date);
+                                  const endDate = new Date(event.end_date);
+
+                                  const startDay = startDate
+                                    .toLocaleDateString("en-GB", {
+                                      weekday: "long",
+                                      day: "2-digit",
+                                    })
+                                    .replace(" ", ", ");
+
+                                  const startMonth = startDate.toLocaleDateString("en-GB", {
+                                    month: "long",
+                                  });
+
+                                  const startYear = startDate.getFullYear();
+
+                                  const endDay = endDate.toLocaleDateString("en-GB", {
+                                    day: "2-digit",
+                                  });
+
+                                  const endMonth = endDate.toLocaleDateString("en-GB", {
+                                    month: "long",
+                                  });
+
+                                  const endYear = endDate.getFullYear();
+
+                                  if (
+                                    startDate.getDate() === endDate.getDate() &&
+                                    startDate.getMonth() === endDate.getMonth() &&
+                                    startYear === endYear
+                                  ) {
+                                    return `${startDay} ${startMonth} ${startYear}`;
+                                  }
+
+                                  if (startYear === endYear) {
+                                    if (startDate.getMonth() === endDate.getMonth()) {
+                                      return `${startDay} - ${endDay} ${endMonth} ${endYear}`;
+                                    } else {
+                                      return `${startDay} ${startMonth} - ${endDay} ${endMonth} ${endYear}`;
+                                    }
+                                  } else {
+                                    return `${startDay} ${startMonth} ${startYear} - ${endDay} ${endMonth} ${endYear}`;
+                                  }
+                                })()}
+                              </Text>
+                            </Box>
+                            <Spacer flex="1" />
+                            <Flex align="center" justify="space-between">
+                              <Button
+                                as={Link}
+                                to={`/events/detail/${event._id}`}
+                                p="0px"
+                                variant="no-hover"
+                                bg="transparent"
+                                mt="12px"
+                              >
+                                <Text
+                                  fontSize="sm"
+                                  fontWeight="bold"
+                                  _hover={{ me: "4px" }}
+                                  transition="all .5s ease"
+                                >
+                                  Detail
+                                </Text>
+                                <Icon
+                                  as={BsArrowRight}
+                                  w="20px"
+                                  h="20px"
+                                  fontSize="xl"
+                                  transition="all .5s ease"
+                                  mx=".3rem"
+                                  cursor="pointer"
+                                  _hover={{ transform: "translateX(20%)" }}
+                                  pt="4px"
+                                />
+                              </Button>
+                              <Text fontSize="md" fontWeight="bold" mt="12px">
+                                Available: {remainingTickets}
+                              </Text>
+                            </Flex>
                           </Flex>
-                        </Flex>
+                        </Box>
                       </Box>
-                    </Box>
-                  ))}
-                {/* Fetch Card Event */}
+                    );
+                  })}
               </Grid>
             </CardBody>
           </Card>
