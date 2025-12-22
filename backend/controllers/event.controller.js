@@ -36,7 +36,6 @@ export const createEvents = async (req, res) => {
       !event.end_date ||
       !event.venue ||
       !event.description ||
-      !event.categories ||
       !event.quantity
     ) {
       return res.status(400).json({ success: false, message: "Please provide all fields" });
@@ -54,7 +53,6 @@ export const createEvents = async (req, res) => {
       event.poster_path = filePath;
     }
 
-    event.available_quantity = event.quantity;
     event.status = "Ready";
 
     try {
@@ -86,6 +84,29 @@ export const getEvents = async (req, res) => {
     const events = await Event.find({});
 
     res.status(200).json({ success: true, data: events });
+  } catch (error) {
+    console.log("Error in Fetching events:", error.message);
+    res.status(404).json({ success: false, message: "Server Error" });
+  }
+};
+
+// Controller to get event by ID
+export const getEventById = async (req, res) => {
+  const { id } = req.params;
+
+  // Validate the event ID
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ success: false, message: "Invalid Event ID" });
+  }
+
+  try {
+    // Fetch the event by ID
+    const event = await Event.findById(id);
+    // Check if event exists
+    if (!event) {
+      return res.status(404).json({ success: false, message: "Event not found" });
+    }
+    res.status(200).json({ success: true, data: event });
   } catch (error) {
     console.log("Error in Fetching events:", error.message);
     res.status(404).json({ success: false, message: "Server Error" });

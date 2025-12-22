@@ -4,6 +4,7 @@ const token = localStorage.getItem("accessToken");
 
 export const useEventStore = create((set) => ({
   events: [],
+  eventById: [],
   setEvent: (events) => set({ events }),
 
   // Function to create a new event
@@ -14,7 +15,6 @@ export const useEventStore = create((set) => ({
       !newEvent.end_date ||
       !newEvent.venue ||
       !newEvent.description ||
-      !newEvent.categories ||
       !newEvent.quantity
     ) {
       return { success: false, message: "Please fill in all fields." };
@@ -26,7 +26,6 @@ export const useEventStore = create((set) => ({
     formData.append("end_date", newEvent.end_date);
     formData.append("venue", newEvent.venue);
     formData.append("description", newEvent.description);
-    formData.append("categories", newEvent.categories);
     formData.append("file", newEvent.poster);
     formData.append("quantity", newEvent.quantity);
 
@@ -70,6 +69,25 @@ export const useEventStore = create((set) => ({
     set({ events: data.data });
   },
 
+  // Function to fetch a event by ID
+  fetchEventById: async (pid) => {
+    const res = await fetch(`/api/events/${pid}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 401 || res.status === 403) {
+      window.location.href = `/signin?message=Session Expired`;
+      return;
+    }
+
+    const data = await res.json();
+
+    set({ eventById: data.data });
+  },
+
   // Function to update a event by ID
   updateEvent: async (pid, updatedEvent) => {
     if (
@@ -78,7 +96,6 @@ export const useEventStore = create((set) => ({
       !updatedEvent.end_date ||
       !updatedEvent.venue ||
       !updatedEvent.description ||
-      !updatedEvent.categories ||
       !updatedEvent.quantity
     ) {
       return { success: false, message: "Please fill in all fields." };
@@ -90,7 +107,6 @@ export const useEventStore = create((set) => ({
     formData.append("end_date", updatedEvent.end_date);
     formData.append("venue", updatedEvent.venue);
     formData.append("description", updatedEvent.description);
-    formData.append("categories", updatedEvent.categories);
     formData.append("file", updatedEvent.poster);
     formData.append("quantity", updatedEvent.quantity);
 

@@ -15,6 +15,7 @@ import {
   Input,
   Badge,
   useToast,
+  Button,
 } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 
@@ -25,6 +26,7 @@ import Footer from "../components/Footer";
 
 import { useReservationStore } from "../store/reservation";
 import { useUserStore } from "../store/user";
+import { Link } from "react-router-dom";
 
 const UserReservation = () => {
   // Utils
@@ -36,7 +38,7 @@ const UserReservation = () => {
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const bgForm = useColorModeValue("white", "navy.800");
   const hoverColor = useColorModeValue("gray.100", "gray.700");
-  
+
   const statusColors = {
     Booked: "green.400",
     Cancelled: "#E53E3E",
@@ -142,19 +144,41 @@ const UserReservation = () => {
           >
             <Flex align="center" justify="space-between" p="6px 0px 22px 0px">
               <Text fontSize="xl" color={textColor} fontWeight="bold">
-                My Reservation List 
+                My Reservation List
               </Text>
-              <Box>
-                <Input
-                  placeholder="Search on list.."
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  size="sm"
+
+              <Flex
+                align="center"
+                justify="space-between"
+                p="0px"
+                gap={{ base: "0px", md: "20px" }}
+              >
+                <Button
+                  fontSize="xs"
+                  as={Link}
+                  to="/dashboard"
+                  bg="teal.300"
+                  color="white"
+                  maxH="30px"
                   borderRadius="5px"
-                  w={{ base: "85%", md: "100%" }}
-                  ml={{ base: "15%", md: "0%" }}
-                />
-              </Box>
+                  _hover={{
+                    bg: "teal.200",
+                  }}
+                >
+                  Dashboard
+                </Button>
+                <Box>
+                  <Input
+                    placeholder="Search on list.."
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    size="sm"
+                    borderRadius="5px"
+                    w={{ base: "85%", md: "100%" }}
+                    ml={{ base: "15%", md: "0%" }}
+                  />
+                </Box>
+              </Flex>
             </Flex>
             <Box>
               <Table variant="simple" color={textColor}>
@@ -185,7 +209,7 @@ const UserReservation = () => {
                 </Thead>
                 <Tbody>
                   {reservations
-                    .filter((reservation) => reservation.user_id.toString() === currentUsers.toString())
+                    .filter((reservation) => reservation.user_id._id === currentUsers?._id)
                     .filter((reservation) => {
                       const reservationDate = new Date(reservation.reservation_date);
 
@@ -208,10 +232,7 @@ const UserReservation = () => {
                     })
                     .map((reservation) => {
                       return (
-                        <Tr
-                          key={reservation._id}
-                          _hover={{ backgroundColor: hoverColor }}
-                        >
+                        <Tr key={reservation._id} _hover={{ backgroundColor: hoverColor }}>
                           <Td borderColor={borderColor}>
                             <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
                               {reservation.user_id.user_id}
@@ -261,7 +282,9 @@ const UserReservation = () => {
                               gap="1"
                               as="button"
                               onClick={() => openCancelModal(reservation._id)}
-                              cursor={reservation.status === "Cancelled" ? "not-allowed" : "pointer"}
+                              cursor={
+                                reservation.status === "Cancelled" ? "not-allowed" : "pointer"
+                              }
                               opacity={reservation.status === "Cancelled" ? 0.5 : 1}
                               pointerEvents={reservation.status === "Cancelled" ? "none" : "auto"}
                             >
@@ -277,7 +300,8 @@ const UserReservation = () => {
                               title="Cancel Event"
                               bodyContent={
                                 <p>
-                                  Please note that this action cannot be undone. To cancel this reservation, type{" "}
+                                  Please note that this action cannot be undone. To cancel this
+                                  reservation, type{" "}
                                   <span style={{ fontWeight: "bold" }}>CONFIRM</span>.
                                 </p>
                               }

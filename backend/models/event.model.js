@@ -22,20 +22,12 @@ const eventsSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    categories: {
-      type: String,
-      required: true,
-    },
     poster_path: {
       type: String,
       required: false,
       default: "-",
     },
     quantity: {
-      type: Number,
-      required: true,
-    },
-    available_quantity: {
       type: Number,
       required: true,
     },

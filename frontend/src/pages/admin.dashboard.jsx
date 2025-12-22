@@ -46,7 +46,6 @@ const AdminDashboard = () => {
     end_date: "",
     venue: "",
     description: "",
-    categories: "",
     poster: "",
     quantity: "",
   });
@@ -129,7 +128,6 @@ const AdminDashboard = () => {
       end_date: formatDate(event.end_date),
       venue: event.venue,
       description: event.description,
-      categories: event.categories,
       poster: event.poster,
       quantity: event.quantity,
     });
@@ -145,7 +143,6 @@ const AdminDashboard = () => {
       end_date: "",
       venue: "",
       description: "",
-      categories: "",
       poster: "",
       quantity: "",
     });
@@ -180,7 +177,6 @@ const AdminDashboard = () => {
       end_date: !newEvent.end_date,
       venue: !newEvent.venue,
       description: !newEvent.description,
-      categories: !newEvent.categories,
       quantity: !newEvent.quantity,
     };
 
@@ -207,7 +203,6 @@ const AdminDashboard = () => {
           end_date: "",
           venue: "",
           description: "",
-          categories: "",
           quantity: "",
         });
         document.querySelector('input[type="file"]').value = "";
@@ -237,7 +232,6 @@ const AdminDashboard = () => {
           end_date: "",
           venue: "",
           description: "",
-          categories: "",
           quantity: "",
         });
         document.querySelector('input[type="file"]').value = "";
@@ -292,7 +286,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <>    
+    <>
       <Background />
       <Sidebar />
       <Box
@@ -377,9 +371,6 @@ const AdminDashboard = () => {
                       Description
                     </Th>
                     <Th borderColor={borderColor} color="gray.400">
-                      Categories
-                    </Th>
-                    <Th borderColor={borderColor} color="gray.400">
                       Quantity
                     </Th>
                     <Th borderColor={borderColor} color="gray.400">
@@ -421,10 +412,7 @@ const AdminDashboard = () => {
                     })
                     .sort((a, b) => new Date(a.start_date) - new Date(b.start_date))
                     .map((event, index) => (
-                      <Tr
-                        key={event._id}
-                        _hover={{ backgroundColor: hoverColor }}
-                      >
+                      <Tr key={event._id} _hover={{ backgroundColor: hoverColor }}>
                         <Td width={{ sm: "50px" }} pl="0px" borderColor={borderColor} py={5}>
                           <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
                             {index + 1}
@@ -440,7 +428,7 @@ const AdminDashboard = () => {
                           >
                             <Image
                               src={
-                                event.poster_path !== "-"  && event.poster_path !== "undefined"
+                                event.poster_path !== "-" && event.poster_path !== "undefined"
                                   ? "/public/uploads/" + event.poster_path
                                   : "/public/uploads/default/event-pict.jpg"
                               }
@@ -487,11 +475,6 @@ const AdminDashboard = () => {
                         <Td borderColor={borderColor}>
                           <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
                             {event.description}
-                          </Text>
-                        </Td>
-                        <Td borderColor={borderColor}>
-                          <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
-                            {event.categories}
                           </Text>
                         </Td>
                         <Td borderColor={borderColor}>
@@ -633,21 +616,6 @@ const AdminDashboard = () => {
                   value={newEvent.description}
                   onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
                   borderColor={errors.description ? "red.500" : "gray.200"}
-                />
-                <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                  Categories
-                </FormLabel>
-                <Input
-                  fontSize="sm"
-                  ms="4px"
-                  type="text"
-                  mb="24px"
-                  size="lg"
-                  placeholder="Categories"
-                  name="categories"
-                  value={newEvent.categories}
-                  onChange={(e) => setNewEvent({ ...newEvent, categories: e.target.value })}
-                  borderColor={errors.categories ? "red.500" : "gray.200"}
                 />
                 <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                   Quantity

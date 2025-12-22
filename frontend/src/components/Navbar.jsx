@@ -17,9 +17,9 @@ import {
   useColorMode,
   useToast,
 } from "@chakra-ui/react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { matchPath, NavLink, useLocation, useNavigate } from "react-router-dom";
 
-import { SettingsIcon } from "./Icons/Icons";
+import { ProfileIcon, SettingsIcon } from "./Icons/Icons";
 import { HSeparator } from "./Separator";
 import { SidebarResponsive } from "./Sidebar";
 
@@ -37,7 +37,7 @@ function Navbar() {
     { path: "/admin/changepassword", name: "Change Password", category: "" },
     { path: "/dashboard", name: "Dashboard", category: "" },
     { path: "/profile", name: "Profile", category: "" },
-    { path: "/events/detail", name: "Event Detail", category: "" },
+    { path: "/events/detail/:id", name: "Event Detail", category: "" },
     { path: "/reservation", name: "Reservation", category: "" },
   ];
 
@@ -46,7 +46,8 @@ function Navbar() {
   const navigate = useNavigate();
   const [isUserLoaded, setIsUserLoaded] = useState(false);
   const [isUserSession, setIsUserSession] = useState(false);
-  const activeRoute = routes.find((route) => route.path === location.pathname);
+  const activeRoute = routes.find((route) => matchPath(route.path, location.pathname)) || {};
+
   const { colorMode, toggleColorMode } = useColorMode();
   const handleOpenDrawer = () => setIsOpen(true);
   const handleCloseDrawer = () => setIsOpen(false);
@@ -63,7 +64,7 @@ function Navbar() {
 
   useEffect(() => {
     if (isUserLoaded && currentUsers) {
-      if (currentUsers?.role === "Admin") {
+      if (currentUsers?.role === "User") {
         setIsUserSession(true);
       } else {
         setIsUserSession(false);
@@ -139,13 +140,13 @@ function Navbar() {
           <Breadcrumb>
             <BreadcrumbItem color={"gray.500"}>
               <BreadcrumbLink
-                href={isUserSession ? "/admin/dashboard" : "/dashboard"}
+                href={isUserSession ? "/dashboard" : "/admin/dashboard"}
                 color={"gray.500"}
               >
                 Pages
               </BreadcrumbLink>
             </BreadcrumbItem>
-            {isUserSession && (
+            {!isUserSession && (
               <BreadcrumbItem color={useColorModeValue("black", "white")}>
                 <BreadcrumbLink href="/admin/dashboard" color={useColorModeValue("black", "white")}>
                   Admin
@@ -190,7 +191,20 @@ function Navbar() {
           flexDirection="row"
           justifyContent="flex-end"
         >
-          {isUserSession && <SidebarResponsive />}
+          {!isUserSession && <SidebarResponsive />}
+
+          {isUserSession && (
+            <NavLink to="/profile">
+              <ProfileIcon
+                cursor="pointer"
+                color={useColorModeValue("black", "white")}
+                w="18px"
+                h="18px"
+                mr="16px"
+              />
+            </NavLink>
+          )}
+
           <SettingsIcon
             cursor="pointer"
             color={useColorModeValue("black", "white")}
