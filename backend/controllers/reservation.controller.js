@@ -4,6 +4,20 @@ import Reservation from "../models/reservation.model.js";
 // Controller to create a new reservation
 export const createReservations = async (req, res) => {
   const reservation = req.body; // user will send this data
+  const { user_id, event_id } = reservation;
+
+  const existingReservation = await Reservation.findOne({
+    user_id,
+    event_id,
+  });
+
+  if (existingReservation) {
+    return res.status(400).json({
+      success: false,
+      message: "You have already booked this event.",
+    });
+  }
+
   reservation.status = "Booked";
   reservation.quantity = 1;
   reservation.reservation_date = new Date();

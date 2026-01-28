@@ -42,7 +42,10 @@ export const createEvents = async (req, res) => {
     }
 
     // Check if event name already exists
-    const existingEventName = await Event.findOne({ name: event.name });
+    const existingEventName = await Event.findOne({
+      name: event.name,
+      na: false,
+    });
 
     if (existingEventName) {
       return res.status(400).json({ success: false, message: "Event name is already exist" });
@@ -134,9 +137,9 @@ export const updateEvents = async (req, res) => {
     // Check if event exists
     const existingEvent = await Event.findById(id);
 
-    // Check if email is being changed
+    // Check if name is being changed
     if (event.name && event.name !== existingEvent.name) {
-      const nameExists = await Event.findOne({ name: event.name });
+      const nameExists = await Event.findOne({ name: event.name, na: false });
 
       if (nameExists) {
         if (req.file) {

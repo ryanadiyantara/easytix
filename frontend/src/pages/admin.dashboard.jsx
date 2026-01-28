@@ -445,26 +445,22 @@ const AdminDashboard = () => {
                         </Td>
                         <Td borderColor={borderColor}>
                           <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
-                            {new Date(event.start_date)
-                              .toLocaleDateString("en-GB", {
-                                weekday: "long",
-                                day: "2-digit",
-                                month: "long",
-                                year: "numeric",
-                              })
-                              .replace(" ", ", ")}
+                            {new Date(event.start_date).toLocaleDateString("en-GB", {
+                              weekday: "long",
+                              day: "2-digit",
+                              month: "long",
+                              year: "numeric",
+                            })}
                           </Text>
                         </Td>
                         <Td borderColor={borderColor}>
                           <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
-                            {new Date(event.end_date)
-                              .toLocaleDateString("en-GB", {
-                                weekday: "long",
-                                day: "2-digit",
-                                month: "long",
-                                year: "numeric",
-                              })
-                              .replace(" ", ", ")}
+                            {new Date(event.end_date).toLocaleDateString("en-GB", {
+                              weekday: "long",
+                              day: "2-digit",
+                              month: "long",
+                              year: "numeric",
+                            })}
                           </Text>
                         </Td>
                         <Td borderColor={borderColor}>

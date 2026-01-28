@@ -36,6 +36,7 @@ const EventDetail = () => {
   const { reservations, createReservation, fetchReservation } = useReservationStore();
 
   const toast = useToast();
+  const textColor = useColorModeValue("gray.700", "white");
   const bgColor = useColorModeValue("white", "gray.700");
   const navigate = useNavigate();
 
@@ -189,14 +190,12 @@ const EventDetail = () => {
                 name="start_date"
                 mb="24px"
                 size="lg"
-                value={new Date(eventById.start_date)
-                  .toLocaleDateString("en-GB", {
-                    weekday: "long",
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric",
-                  })
-                  .replace(" ", ", ")}
+                value={new Date(eventById.start_date).toLocaleDateString("en-GB", {
+                  weekday: "long",
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}
                 readOnly
               />
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
@@ -210,14 +209,12 @@ const EventDetail = () => {
                 name="end_date"
                 mb="24px"
                 size="lg"
-                value={new Date(eventById.end_date)
-                  .toLocaleDateString("en-GB", {
-                    weekday: "long",
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric",
-                  })
-                  .replace(" ", ", ")}
+                value={new Date(eventById.end_date).toLocaleDateString("en-GB", {
+                  weekday: "long",
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}
                 readOnly
               />
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
@@ -244,11 +241,18 @@ const EventDetail = () => {
                 name="description"
                 mb="24px"
                 size="lg"
+                color={textColor}
                 value={eventById.description}
                 readOnly
                 resize="none" // Agar tidak bisa di-resize manual oleh user
                 isDisabled // Jika ingin tampilan lebih mirip dengan input readOnly
-                _disabled={{ bg: "gray.100", cursor: "not-allowed" }}
+                bg="transparent"
+                _disabled={{
+                  bg: "transparent",
+                  color: textColor,
+                  cursor: "default",
+                  opacity: 1, // penting: supaya teks tidak pudar
+                }}
                 overflow="hidden"
                 whiteSpace="pre-wrap" // Agar teks panjang tidak terpotong
               />

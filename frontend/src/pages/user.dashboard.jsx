@@ -120,6 +120,15 @@ const UserDashboard = () => {
                 {events
                   .filter((event) => !event.na)
                   .filter((event) => {
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+
+                    const startDate = new Date(event.start_date);
+                    startDate.setHours(0, 0, 0, 0);
+
+                    return startDate >= today;
+                  })
+                  .filter((event) => {
                     const startDate = new Date(event.start_date);
                     const endDate = new Date(event.end_date);
 
@@ -192,12 +201,10 @@ const UserDashboard = () => {
                                   const startDate = new Date(event.start_date);
                                   const endDate = new Date(event.end_date);
 
-                                  const startDay = startDate
-                                    .toLocaleDateString("en-GB", {
-                                      weekday: "long",
-                                      day: "2-digit",
-                                    })
-                                    .replace(" ", ", ");
+                                  const startDay = startDate.toLocaleDateString("en-GB", {
+                                    weekday: "long",
+                                    day: "2-digit",
+                                  });
 
                                   const startMonth = startDate.toLocaleDateString("en-GB", {
                                     month: "long",
