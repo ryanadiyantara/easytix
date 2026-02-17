@@ -82,6 +82,8 @@ const EventDetail = () => {
         venue: eventById.venue || "",
         description: eventById.description || "",
         poster_path: eventById.poster_path || "",
+        quantity: eventById.quantity || "",
+        price: eventById.price || "",
       });
     }
   }, [eventById]);

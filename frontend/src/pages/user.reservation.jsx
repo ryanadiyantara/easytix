@@ -17,11 +17,9 @@ import {
   useToast,
   Button,
 } from "@chakra-ui/react";
-import { FaTrash } from "react-icons/fa";
 
 import Background from "../components/Background";
 import Navbar from "../components/Navbar";
-import CustomModal from "../components/Modal";
 import Footer from "../components/Footer";
 
 import { useReservationStore } from "../store/reservation";
@@ -30,10 +28,9 @@ import { Link } from "react-router-dom";
 
 const UserReservation = () => {
   // Utils
-  const { reservations, fetchReservation, cancelReservation } = useReservationStore();
+  const { reservations, fetchReservation } = useReservationStore();
   const { currentUsers, fetchCurrentUser } = useUserStore();
 
-  const toast = useToast();
   const textColor = useColorModeValue("gray.700", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
   const bgForm = useColorModeValue("white", "navy.800");
@@ -45,23 +42,9 @@ const UserReservation = () => {
   };
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-  const [selectedReservationPid, setSelectedReservationPid] = useState(null);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value.toLowerCase());
-  };
-
-  const openCancelModal = (pid) => {
-    setSelectedReservationPid(pid);
-    setIsOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
-    setInputValue("");
-    setSelectedReservationPid(null);
   };
 
   // Services
@@ -69,43 +52,6 @@ const UserReservation = () => {
     fetchReservation();
     fetchCurrentUser();
   }, [fetchReservation, fetchCurrentUser]);
-
-  const handleCancelReservation = async (pid) => {
-    if (inputValue !== "CONFIRM") {
-      toast({
-        title: "Error",
-        description: "Input does not match, try again.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-      return;
-    }
-
-    const { success, message } = await cancelReservation(pid);
-
-    if (success) {
-      toast({
-        title: "Success",
-        description: "Reservation cancel successfully",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-      setIsOpen(false);
-      setInputValue("");
-      setSelectedEventName(null);
-      setSelectedEventPid(null);
-    } else {
-      toast({
-        title: "Error",
-        description: message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  };
 
   return (
     <>
@@ -200,10 +146,10 @@ const UserReservation = () => {
                       Quantity
                     </Th>
                     <Th borderColor={borderColor} color="gray.400">
-                      Status
+                      Price
                     </Th>
                     <Th borderColor={borderColor} color="gray.400">
-                      Action
+                      Status
                     </Th>
                   </Tr>
                 </Thead>
@@ -226,6 +172,7 @@ const UserReservation = () => {
                         reservation.user_id.name.toLowerCase().includes(searchQuery) ||
                         reservation.event_id.name.toLowerCase().includes(searchQuery) ||
                         String(reservation.quantity).includes(searchQuery) ||
+                        String(reservation.price).includes(searchQuery) ||
                         reservation.status.toLowerCase().includes(searchQuery) ||
                         formattedReservationDate.includes(searchQuery.toLowerCase())
                       );
@@ -264,6 +211,11 @@ const UserReservation = () => {
                           </Td>
                           <Td borderColor={borderColor}>
                             <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
+                              Rp. {reservation.price}
+                            </Text>
+                          </Td>
+                          <Td borderColor={borderColor}>
+                            <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
                               <Badge
                                 bg={statusColors[reservation.status] || "gray.400"}
                                 color={"white"}
@@ -274,43 +226,6 @@ const UserReservation = () => {
                                 {reservation.status}
                               </Badge>
                             </Text>
-                          </Td>
-
-                          <Td borderColor={borderColor}>
-                            <Flex
-                              alignItems="center"
-                              gap="1"
-                              as="button"
-                              onClick={() => openCancelModal(reservation._id)}
-                              cursor={
-                                reservation.status === "Cancelled" ? "not-allowed" : "pointer"
-                              }
-                              opacity={reservation.status === "Cancelled" ? 0.5 : 1}
-                              pointerEvents={reservation.status === "Cancelled" ? "none" : "auto"}
-                            >
-                              <FaTrash size="14" color="#E53E3E" />
-                              <Text fontSize="14px" color="#E53E3E" fontWeight="bold">
-                                Cancel
-                              </Text>
-                            </Flex>
-                            {/* Modal Canceled */}
-                            <CustomModal
-                              isOpen={isOpen}
-                              onClose={handleClose}
-                              title="Cancel Event"
-                              bodyContent={
-                                <p>
-                                  Please note that this action cannot be undone. To cancel this
-                                  reservation, type{" "}
-                                  <span style={{ fontWeight: "bold" }}>CONFIRM</span>.
-                                </p>
-                              }
-                              modalBgColor="blackAlpha.400"
-                              modalBackdropFilter="blur(1px)"
-                              inputValue={inputValue}
-                              onInputChange={(e) => setInputValue(e.target.value)}
-                              onConfirm={() => handleCancelReservation(selectedReservationPid)}
-                            />
                           </Td>
                         </Tr>
                       );

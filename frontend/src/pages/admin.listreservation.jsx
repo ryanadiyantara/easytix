@@ -124,6 +124,9 @@ const AdminListReservation = () => {
                       Quantity
                     </Th>
                     <Th borderColor={borderColor} color="gray.400">
+                      Price
+                    </Th>
+                    <Th borderColor={borderColor} color="gray.400">
                       Status
                     </Th>
                   </Tr>
@@ -146,6 +149,7 @@ const AdminListReservation = () => {
                         reservation.user_id.name.toLowerCase().includes(searchQuery) ||
                         reservation.event_id.name.toLowerCase().includes(searchQuery) ||
                         String(reservation.quantity).includes(searchQuery) ||
+                        String(reservation.price).includes(searchQuery) ||
                         reservation.status.toLowerCase().includes(searchQuery) ||
                         formattedReservationDate.includes(searchQuery.toLowerCase())
                       );
@@ -180,6 +184,11 @@ const AdminListReservation = () => {
                           <Td borderColor={borderColor}>
                             <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
                               {reservation.quantity}
+                            </Text>
+                          </Td>
+                          <Td borderColor={borderColor}>
+                            <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
+                              Rp. {reservation.price}
                             </Text>
                           </Td>
                           <Td borderColor={borderColor}>
