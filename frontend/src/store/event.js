@@ -15,7 +15,8 @@ export const useEventStore = create((set) => ({
       !newEvent.end_date ||
       !newEvent.venue ||
       !newEvent.description ||
-      !newEvent.quantity
+      !newEvent.quantity ||
+      !newEvent.price
     ) {
       return { success: false, message: "Please fill in all fields." };
     }
@@ -28,6 +29,7 @@ export const useEventStore = create((set) => ({
     formData.append("description", newEvent.description);
     formData.append("file", newEvent.poster);
     formData.append("quantity", newEvent.quantity);
+    formData.append("price", newEvent.price);
 
     const res = await fetch("/api/events", {
       method: "POST",
@@ -96,7 +98,8 @@ export const useEventStore = create((set) => ({
       !updatedEvent.end_date ||
       !updatedEvent.venue ||
       !updatedEvent.description ||
-      !updatedEvent.quantity
+      !updatedEvent.quantity ||
+      !updatedEvent.price
     ) {
       return { success: false, message: "Please fill in all fields." };
     }
@@ -109,6 +112,7 @@ export const useEventStore = create((set) => ({
     formData.append("description", updatedEvent.description);
     formData.append("file", updatedEvent.poster);
     formData.append("quantity", updatedEvent.quantity);
+    formData.append("price", updatedEvent.price);
 
     const res = await fetch(`/api/events/${pid}`, {
       method: "PUT",

@@ -48,6 +48,7 @@ const AdminDashboard = () => {
     description: "",
     poster: "",
     quantity: "",
+    price: "",
   });
   const [errors, setErrors] = useState({});
   const [isEditing, setIsEditing] = useState(false);
@@ -130,6 +131,7 @@ const AdminDashboard = () => {
       description: event.description,
       poster: event.poster,
       quantity: event.quantity,
+      price: event.price,
     });
     setErrors({});
     setIsEditing(true);
@@ -145,6 +147,7 @@ const AdminDashboard = () => {
       description: "",
       poster: "",
       quantity: "",
+      price: "",
     });
     document.querySelector('input[type="file"]').value = "";
     setErrors({});
@@ -178,6 +181,7 @@ const AdminDashboard = () => {
       venue: !newEvent.venue,
       description: !newEvent.description,
       quantity: !newEvent.quantity,
+      price: !newEvent.price,
     };
 
     setErrors(currentErrors);
@@ -204,6 +208,7 @@ const AdminDashboard = () => {
           venue: "",
           description: "",
           quantity: "",
+          price: "",
         });
         document.querySelector('input[type="file"]').value = "";
       } else {
@@ -233,6 +238,7 @@ const AdminDashboard = () => {
           venue: "",
           description: "",
           quantity: "",
+          price: "",
         });
         document.querySelector('input[type="file"]').value = "";
       } else {
@@ -374,6 +380,9 @@ const AdminDashboard = () => {
                       Quantity
                     </Th>
                     <Th borderColor={borderColor} color="gray.400">
+                      Price
+                    </Th>
+                    <Th borderColor={borderColor} color="gray.400">
                       Action
                     </Th>
                   </Tr>
@@ -478,7 +487,11 @@ const AdminDashboard = () => {
                             {event.quantity}
                           </Text>
                         </Td>
-
+                        <Td borderColor={borderColor}>
+                          <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
+                            {event.price}
+                          </Text>
+                        </Td>
                         <Td borderColor={borderColor}>
                           <Flex direction="row" p="0px" alignItems="center" gap="4">
                             <Flex
@@ -627,6 +640,21 @@ const AdminDashboard = () => {
                   value={newEvent.quantity}
                   onChange={(e) => setNewEvent({ ...newEvent, quantity: e.target.value })}
                   borderColor={errors.quantity ? "red.500" : "gray.200"}
+                />
+                <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                  Price
+                </FormLabel>
+                <Input
+                  fontSize="sm"
+                  ms="4px"
+                  type="number"
+                  mb="24px"
+                  size="lg"
+                  placeholder="Price"
+                  name="price"
+                  value={newEvent.price}
+                  onChange={(e) => setNewEvent({ ...newEvent, price: e.target.value })}
+                  borderColor={errors.price ? "red.500" : "gray.200"}
                 />
                 <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                   Poster

@@ -31,6 +31,11 @@ const eventsSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    price: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     status: {
       type: String,
       required: true,
@@ -43,7 +48,7 @@ const eventsSchema = new mongoose.Schema(
   },
   {
     timestamps: true, // Automatically add createdAt and updatedAt fields
-  }
+  },
 );
 
 const Event = mongoose.model("Event", eventsSchema);

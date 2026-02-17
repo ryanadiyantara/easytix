@@ -48,6 +48,7 @@ const EventDetail = () => {
     description: "",
     poster_path: "",
     quantity: "",
+    price: "",
   });
 
   const [isOpen, setIsOpen] = useState(false);
@@ -255,6 +256,20 @@ const EventDetail = () => {
                 }}
                 overflow="hidden"
                 whiteSpace="pre-wrap" // Agar teks panjang tidak terpotong
+              />
+              <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                Price
+              </FormLabel>
+              <Input
+                fontSize="sm"
+                ms="4px"
+                borderRadius="15px"
+                type="text"
+                name="price"
+                mb="24px"
+                size="lg"
+                value={eventById.price}
+                readOnly
               />
               {/* Button jika tiket sudah habis */}
               {isEventSoldOut ? (
