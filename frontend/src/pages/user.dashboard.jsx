@@ -162,7 +162,10 @@ const UserDashboard = () => {
                     const ticketId = event._id;
                     const totalReserved = reservations
                       .filter((reservation) => reservation.event_id._id === ticketId)
-                      .filter((reservation) => reservation.status === "Booked")
+                      .filter(
+                        (reservation) =>
+                          reservation.status === "Booked" || reservation.status === "Pending",
+                      )
                       .reduce((acc, reservation) => acc + reservation.quantity, 0);
 
                     const remainingTickets = event.quantity - totalReserved;

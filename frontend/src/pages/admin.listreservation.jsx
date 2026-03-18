@@ -188,7 +188,9 @@ const AdminListReservation = () => {
                           </Td>
                           <Td borderColor={borderColor}>
                             <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
-                              Rp. {reservation.price}
+                              {reservation.event_id.price === 0
+                                ? "-"
+                                : `Rp.${reservation.event_id.price}`}
                             </Text>
                           </Td>
                           <Td borderColor={borderColor}>

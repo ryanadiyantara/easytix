@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Reservation from "../models/reservation.model.js";
+import Event from "../models/event.model.js";
 
 // Controller to create a new reservation
 export const createReservations = async (req, res) => {
@@ -18,7 +19,14 @@ export const createReservations = async (req, res) => {
     });
   }
 
-  reservation.status = "Booked";
+  const eventPrice = await Event.findById(event_id).select("price");
+
+  if (eventPrice && eventPrice.price != 0) {
+    reservation.status = "Pending";
+  } else {
+    reservation.status = "Booked";
+  }
+
   reservation.quantity = 1;
   reservation.reservation_date = new Date();
 
