@@ -24,6 +24,14 @@ const reservationsSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    payment_method: {
+      type: String,
+      required: false,
+    },
+    payment_date: {
+      type: Date,
+      required: false,
+    },
   },
   {
     timestamps: true, // Automatically add createdAt and updatedAt fields

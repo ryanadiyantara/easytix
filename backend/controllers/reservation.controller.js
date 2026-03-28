@@ -9,6 +9,7 @@ export const createReservations = async (req, res) => {
   const existingReservation = await Reservation.findOne({
     user_id,
     event_id,
+    status: { $ne: "Cancelled" },
   });
 
   if (existingReservation) {

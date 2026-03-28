@@ -129,6 +129,12 @@ const AdminListReservation = () => {
                     <Th borderColor={borderColor} color="gray.400">
                       Status
                     </Th>
+                    <Th borderColor={borderColor} color="gray.400">
+                      Payment Method
+                    </Th>
+                    <Th borderColor={borderColor} color="gray.400">
+                      Payment Date
+                    </Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -202,6 +208,20 @@ const AdminListReservation = () => {
                               >
                                 {reservation.status}
                               </Badge>
+                            </Text>
+                          </Td>
+                          <Td borderColor={borderColor}>
+                            <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
+                              {reservation.payment_method}
+                            </Text>
+                          </Td>
+                          <Td borderColor={borderColor}>
+                            <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
+                              {new Date(reservation.payment_date).toLocaleDateString("en-GB", {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric",
+                              })}
                             </Text>
                           </Td>
                         </Tr>

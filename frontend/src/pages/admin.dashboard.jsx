@@ -520,7 +520,7 @@ const AdminDashboard = () => {
                         </Td>
                         <Td borderColor={borderColor}>
                           <Text fontSize="md" color={textColor} fontWeight="bold" minWidth="100%">
-                            {event.price}
+                            Rp. {event.price}
                           </Text>
                         </Td>
                         <Td borderColor={borderColor}>
