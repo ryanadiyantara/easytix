@@ -15,8 +15,8 @@ export const useEventStore = create((set) => ({
       !newEvent.end_date ||
       !newEvent.venue ||
       !newEvent.description ||
-      !newEvent.quantity ||
-      !newEvent.price
+      (!newEvent.quantity && newEvent.quantity < 1) ||
+      (!newEvent.price && newEvent.price < 1)
     ) {
       return { success: false, message: "Please fill in all fields." };
     }
@@ -98,8 +98,10 @@ export const useEventStore = create((set) => ({
       !updatedEvent.end_date ||
       !updatedEvent.venue ||
       !updatedEvent.description ||
-      !updatedEvent.quantity ||
-      !updatedEvent.price
+      updatedEvent.quantity === "" ||
+      updatedEvent.price === "" ||
+      Number(updatedEvent.quantity) < 1 ||
+      Number(updatedEvent.price) < 1
     ) {
       return { success: false, message: "Please fill in all fields." };
     }

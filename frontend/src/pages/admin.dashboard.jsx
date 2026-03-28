@@ -28,10 +28,12 @@ import CustomModal from "../components/Modal";
 import Footer from "../components/Footer";
 
 import { useEventStore } from "../store/event";
+import { useReservationStore } from "../store/reservation";
 
 const AdminDashboard = () => {
   // Utils
   const { events, createEvent, fetchEvent, updateEvent, deleteEvent } = useEventStore();
+  const { reservations, fetchReservation } = useReservationStore();
 
   const toast = useToast();
   const textColor = useColorModeValue("gray.700", "white");
@@ -104,14 +106,10 @@ const AdminDashboard = () => {
   const handleDateChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "start_date" && !value) {
-      newEvent.end_date = "";
-    }
-
-    if (name === "end_date" && new Date(value) < new Date(newEvent.start_date)) {
+    if (name === "start_date" && new Date(value) > new Date(newEvent.end_date)) {
       toast({
         title: "Error",
-        description: "End Date cannot be before Start Date.",
+        description: "Start date cannot be after end date.",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -119,6 +117,19 @@ const AdminDashboard = () => {
       e.target.value = "";
       return;
     }
+
+    if (name === "end_date" && new Date(value) < new Date(newEvent.start_date)) {
+      toast({
+        title: "Error",
+        description: "End date cannot be before start date.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      e.target.value = "";
+      return;
+    }
+
     setNewEvent({ ...newEvent, [name]: value });
   };
 
@@ -171,7 +182,8 @@ const AdminDashboard = () => {
   // Services
   useEffect(() => {
     fetchEvent();
-  }, [fetchEvent]);
+    fetchReservation();
+  }, [fetchEvent, fetchReservation]);
 
   const handleSubmit = async () => {
     const currentErrors = {
@@ -188,6 +200,25 @@ const AdminDashboard = () => {
 
     if (isEditing && editingEventId) {
       // Update event
+      const totalReserved = reservations
+        .filter((reservation) => reservation.event_id._id === editingEventId)
+        .filter(
+          (reservation) => reservation.status === "Booked" || reservation.status === "Pending",
+        )
+        .reduce((acc, reservation) => acc + reservation.quantity, 0);
+
+      if (newEvent.quantity < totalReserved) {
+        toast({
+          title: "Invalid Quantity",
+          description: `Minimum ticket quantity is ${totalReserved} because tickets are already reserved.`,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        e.target.value = "";
+        return;
+      }
+
       const { success, message } = await updateEvent(editingEventId, newEvent);
 
       if (success) {
@@ -637,6 +668,7 @@ const AdminDashboard = () => {
                   size="lg"
                   placeholder="Quantity"
                   name="quantity"
+                  min={1}
                   value={newEvent.quantity}
                   onChange={(e) => setNewEvent({ ...newEvent, quantity: e.target.value })}
                   borderColor={errors.quantity ? "red.500" : "gray.200"}
@@ -652,6 +684,7 @@ const AdminDashboard = () => {
                   size="lg"
                   placeholder="Price"
                   name="price"
+                  min={1}
                   value={newEvent.price}
                   onChange={(e) => setNewEvent({ ...newEvent, price: e.target.value })}
                   borderColor={errors.price ? "red.500" : "gray.200"}
