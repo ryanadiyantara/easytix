@@ -281,6 +281,7 @@ const UserReservation = () => {
                     .filter((reservation) => reservation.user_id._id === currentUsers?._id)
                     .filter((reservation) => {
                       const reservationDate = new Date(reservation.reservation_date);
+                      const paymentDate = new Date(reservation.payment_date);
 
                       const formattedReservationDate = reservationDate
                         .toLocaleDateString("en-GB", {
@@ -290,14 +291,22 @@ const UserReservation = () => {
                         })
                         .toLowerCase();
 
+                      const formattedPaymentDate = paymentDate
+                        .toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "long",
+                          year: "numeric",
+                        })
+                        .toLowerCase();
+
                       return (
-                        reservation.user_id.user_id.toLowerCase().includes(searchQuery) ||
-                        reservation.user_id.name.toLowerCase().includes(searchQuery) ||
                         reservation.event_id.name.toLowerCase().includes(searchQuery) ||
+                        formattedReservationDate.includes(searchQuery.toLowerCase()) ||
                         String(reservation.quantity).includes(searchQuery) ||
                         String(reservation.price).includes(searchQuery) ||
                         reservation.status.toLowerCase().includes(searchQuery) ||
-                        formattedReservationDate.includes(searchQuery.toLowerCase())
+                        reservation.payment_method.toLowerCase().includes(searchQuery) ||
+                        formattedPaymentDate.includes(searchQuery.toLowerCase())
                       );
                     })
                     .map((reservation) => {

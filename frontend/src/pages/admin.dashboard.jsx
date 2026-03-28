@@ -447,7 +447,10 @@ const AdminDashboard = () => {
                         event.name.toLowerCase().includes(searchQuery) ||
                         formattedStartDate.includes(searchQuery.toLowerCase()) ||
                         formattedEndDate.includes(searchQuery.toLowerCase()) ||
-                        event.description.toLowerCase().includes(searchQuery)
+                        event.venue.toLowerCase().includes(searchQuery) ||
+                        event.description.toLowerCase().includes(searchQuery) ||
+                        String(event.quantity).includes(searchQuery) ||
+                        String(event.price).includes(searchQuery)
                       );
                     })
                     .sort((a, b) => new Date(a.start_date) - new Date(b.start_date))
